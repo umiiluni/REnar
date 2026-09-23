@@ -45,45 +45,50 @@
       </sc-if>
     </div>
     <div style="flex:1"></div>
-    <div style="position:relative;flex:none">
-      <button class="btn btn-icon" aria-label="Notificaciones" onClick="{{ toggleNotifs }}" style="position:relative">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.7 21a2 2 0 01-3.4 0"></path></svg>
-        <sc-if value="{{ hasNotifs }}" hint-placeholder-val="{{ true }}">
-          <span style="position:absolute;top:2px;right:2px;background:var(--color-accent);color:var(--color-bg);font-size:10px;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 3px">{{ notifCount }}</span>
+    <sc-if value="{{ loggedIn }}" hint-placeholder-val="{{ true }}">
+      <div style="position:relative;flex:none">
+        <button class="btn btn-icon" aria-label="Notificaciones" onClick="{{ toggleNotifs }}" style="position:relative">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.7 21a2 2 0 01-3.4 0"></path></svg>
+          <sc-if value="{{ hasNotifs }}" hint-placeholder-val="{{ true }}">
+            <span style="position:absolute;top:2px;right:2px;background:var(--color-accent);color:var(--color-bg);font-size:10px;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 3px">{{ notifCount }}</span>
+          </sc-if>
+        </button>
+        <sc-if value="{{ notifsOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;top:44px;right:0;width:300px;background:var(--color-bg);border:1px solid var(--color-divider);box-shadow:var(--shadow-md);z-index:50">
+            <div style="padding:12px 14px;font-family:var(--font-heading);font-weight:600;border-bottom:1px solid var(--color-divider)">Notificaciones</div>
+            <sc-for list="{{ notifications }}" as="n" hint-placeholder-count="3">
+              <div style="padding:12px 14px;font-size:13px;border-bottom:1px solid var(--color-divider)">
+                <div>{{ n.text }}</div>
+                <div style="font-size:11px;opacity:.55;margin-top:3px">{{ n.time }}</div>
+              </div>
+            </sc-for>
+          </div>
         </sc-if>
-      </button>
-      <sc-if value="{{ notifsOpen }}" hint-placeholder-val="{{ false }}">
-        <div style="position:absolute;top:44px;right:0;width:300px;background:var(--color-bg);border:1px solid var(--color-divider);box-shadow:var(--shadow-md);z-index:50">
-          <div style="padding:12px 14px;font-family:var(--font-heading);font-weight:600;border-bottom:1px solid var(--color-divider)">Notificaciones</div>
-          <sc-for list="{{ notifications }}" as="n" hint-placeholder-count="3">
-            <div style="padding:12px 14px;font-size:13px;border-bottom:1px solid var(--color-divider)">
-              <div>{{ n.text }}</div>
-              <div style="font-size:11px;opacity:.55;margin-top:3px">{{ n.time }}</div>
-            </div>
-          </sc-for>
-        </div>
-      </sc-if>
-    </div>
-    <div style="position:relative;flex:none">
-      <button onClick="{{ toggleAccount }}" style="display:flex;align-items:center;gap:8px;background:none;border:1px solid transparent;cursor:pointer;padding:6px 8px;border-radius:var(--radius-md)" style-hover="background:color-mix(in srgb, var(--color-text) 6%, transparent)">
-        <div style="width:28px;height:28px;border-radius:50%;background:var(--color-accent-700);color:var(--color-bg);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">JP</div>
-        <div style="text-align:left;line-height:1.1">
-          <div style="font-size:13px;font-weight:600">Juan Pérez</div>
-          <div style="font-size:11px;opacity:.55">Cuenta verificada</div>
-        </div>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"></path></svg>
-      </button>
-      <sc-if value="{{ accountOpen }}" hint-placeholder-val="{{ false }}">
-        <div style="position:absolute;top:48px;right:0;width:200px;background:var(--color-bg);border:1px solid var(--color-divider);box-shadow:var(--shadow-md);z-index:50">
-          <a href="Perfil.dc.html" style="display:block;padding:10px 14px;font-size:14px;text-decoration:none;color:var(--color-text)" style-hover="background:var(--color-accent-100)">Mi perfil</a>
-          <a href="Tramites.dc.html" style="display:block;padding:10px 14px;font-size:14px;text-decoration:none;color:var(--color-text)" style-hover="background:var(--color-accent-100)">Mis trámites</a>
-          <a href="Pagos.dc.html" style="display:block;padding:10px 14px;font-size:14px;text-decoration:none;color:var(--color-text)" style-hover="background:var(--color-accent-100)">Mis documentos</a>
-          <a href="Perfil.dc.html" style="display:block;padding:10px 14px;font-size:14px;text-decoration:none;color:var(--color-text)" style-hover="background:var(--color-accent-100)">Configuración</a>
-          <div class="hr" style="margin:0"></div>
-          <a href="Home.dc.html" style="display:block;padding:10px 14px;font-size:14px;text-decoration:none;color:var(--color-accent-800)" style-hover="background:var(--color-accent-100)">Cerrar sesión</a>
-        </div>
-      </sc-if>
-    </div>
+      </div>
+      <div style="position:relative;flex:none">
+        <button onClick="{{ toggleAccount }}" style="display:flex;align-items:center;gap:8px;background:none;border:1px solid transparent;cursor:pointer;padding:6px 8px;border-radius:var(--radius-md)" style-hover="background:color-mix(in srgb, var(--color-text) 6%, transparent)">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--color-accent-700);color:var(--color-bg);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">JP</div>
+          <div style="text-align:left;line-height:1.1">
+            <div style="font-size:13px;font-weight:600">Juan Pérez</div>
+            <div style="font-size:11px;opacity:.55">Cuenta verificada</div>
+          </div>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"></path></svg>
+        </button>
+        <sc-if value="{{ accountOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;top:48px;right:0;width:200px;background:var(--color-bg);border:1px solid var(--color-divider);box-shadow:var(--shadow-md);z-index:50">
+            <a href="Perfil.dc.html" style="display:block;padding:10px 14px;font-size:14px;text-decoration:none;color:var(--color-text)" style-hover="background:var(--color-accent-100)">Mi perfil</a>
+            <a href="Tramites.dc.html" style="display:block;padding:10px 14px;font-size:14px;text-decoration:none;color:var(--color-text)" style-hover="background:var(--color-accent-100)">Mis trámites</a>
+            <a href="Pagos.dc.html" style="display:block;padding:10px 14px;font-size:14px;text-decoration:none;color:var(--color-text)" style-hover="background:var(--color-accent-100)">Mis documentos</a>
+            <a href="Perfil.dc.html" style="display:block;padding:10px 14px;font-size:14px;text-decoration:none;color:var(--color-text)" style-hover="background:var(--color-accent-100)">Configuración</a>
+            <div class="hr" style="margin:0"></div>
+            <a href="Home.dc.html" style="display:block;padding:10px 14px;font-size:14px;text-decoration:none;color:var(--color-accent-800)" style-hover="background:var(--color-accent-100)">Cerrar sesión</a>
+          </div>
+        </sc-if>
+      </div>
+      <template slot="else">
+        <a href="Perfil.dc.html" class="btn btn-primary" style="flex:none;padding:8px 16px;font-size:14px">Iniciar sesión</a>
+      </template>
+    </sc-if>
     <button class="btn btn-icon om-mobile-toggle" aria-label="Abrir menú" onClick="{{ toggleMobile }}" style="display:none">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
     </button>
@@ -140,7 +145,7 @@
   </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;active&quot;: {&quot;editor&quot;: null, &quot;default&quot;: &quot;inicio&quot;, &quot;tsType&quot;: &quot;string&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;active&quot;: {&quot;editor&quot;: null, &quot;default&quot;: &quot;inicio&quot;, &quot;tsType&quot;: &quot;string&quot;}, &quot;loggedIn&quot;: {&quot;editor&quot;: null, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;}}">
 const NAV_GROUPS = [
   { label: 'Trámites', href: 'Tramites.dc.html', items: [
     { label: 'Solicitar trámite', desc: 'Iniciá un trámite nuevo', href: 'Tramites.dc.html' },
@@ -223,6 +228,7 @@ class Component extends DCLogic {
       toggleNotifs: () => this.setState(s => ({ notifsOpen: !s.notifsOpen, accountOpen: false })),
       accountOpen: this.state.accountOpen,
       toggleAccount: () => this.setState(s => ({ accountOpen: !s.accountOpen, notifsOpen: false })),
+      loggedIn: this.props.loggedIn !== false,
       mobileOpen: this.state.mobileOpen,
       toggleMobile: () => this.setState(s => ({ mobileOpen: !s.mobileOpen })),
       stop: e => e.stopPropagation(),
