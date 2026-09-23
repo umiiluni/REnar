@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/styles.css">
+  <script src="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/_ds_bundle.js"></script>
+  <title>miRenar — Puntos fronterizos</title>
+</helmet>
+<div style="background:var(--color-bg);min-height:100vh;display:flex;flex-direction:column">
+  <dc-import name="Header" active="fronteras" hint-size="100%,116px"></dc-import>
+  <div style="max-width:1280px;margin:0 auto;padding:16px 24px 0;font-size:13px;opacity:.6">
+    <a href="Home.dc.html" style="color:var(--color-text);text-decoration:none" style-hover="text-decoration:underline">Inicio</a> / Puntos fronterizos
+  </div>
+  <section style="max-width:1280px;margin:0 auto;padding:16px 24px 20px;width:100%">
+    <h1 style="font-family:var(--font-heading);font-size:32px;font-weight:700;margin:0 0 4px">Puntos fronterizos</h1>
+    <p style="font-size:14px;opacity:.65;margin:0 0 24px">Estado y horarios de los pasos habilitados para el control de armas y municiones.</p>
+
+    <div style="position:relative;max-width:420px;margin-bottom:20px">
+      <input class="input" type="text" placeholder="Buscar paso fronterizo..." value="{{ query }}" onChange="{{ onQuery }}" style="padding-left:34px" />
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);opacity:.5"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px">
+      <sc-for list="{{ filtered }}" as="p" hint-placeholder-count="3">
+        <div class="blueprint" style="padding:20px;background:var(--color-surface)">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+            <div style="font-family:var(--font-heading);font-weight:700;font-size:16px">{{ p.nombre }}</div>
+            <span class="tag" style="{{ p.style }}">{{ p.estado }}</span>
+          </div>
+          <div style="font-size:13px;opacity:.7;margin-bottom:4px">{{ p.ubicacion }}</div>
+          <div style="font-size:12px;opacity:.6">Horario: {{ p.horario }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+  <div style="flex:1"></div>
+  <dc-import name="Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const PUNTOS = [
+  { nombre: 'Paso Cristo Redentor', ubicacion: 'Mendoza — Los Andes (Chile)', estado: 'Operativo', horario: '00:00 a 24:00' },
+  { nombre: 'Paso Cardenal Samoré', ubicacion: 'Neuquén — Puyehue (Chile)', estado: 'Operativo', horario: '08:00 a 20:00' },
+  { nombre: 'Paso Integración Austral', ubicacion: 'Santa Cruz — Chile', estado: 'Degradado', horario: '09:00 a 19:00' },
+];
+function style(estado) {
+  if (estado === 'Operativo') return 'background:oklch(94% 0.05 155);color:oklch(35% 0.09 155)';
+  return 'background:oklch(94% 0.06 80);color:oklch(42% 0.12 80)';
+}
+class Component extends DCLogic {
+  state = { query: '' };
+  renderVals() {
+    const q = this.state.query.trim().toLowerCase();
+    return {
+      query: this.state.query, onQuery: e => this.setState({ query: e.target.value }),
+      filtered: PUNTOS.filter(p => !q || p.nombre.toLowerCase().includes(q) || p.ubicacion.toLowerCase().includes(q)).map(p => ({ ...p, style: style(p.estado) })),
+    };
+  }
+}
+</script>
+</body>
+</html>

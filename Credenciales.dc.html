@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/styles.css">
+  <script src="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/_ds_bundle.js"></script>
+  <title>miRenar — Credenciales</title>
+</helmet>
+<div style="background:var(--color-bg);min-height:100vh;display:flex;flex-direction:column">
+  <dc-import name="Header" active="credenciales" hint-size="100%,116px"></dc-import>
+  <div style="max-width:1280px;margin:0 auto;padding:16px 24px 0;font-size:13px;opacity:.6">
+    <a href="Home.dc.html" style="color:var(--color-text);text-decoration:none" style-hover="text-decoration:underline">Inicio</a> / Credenciales
+  </div>
+  <section style="max-width:1280px;margin:0 auto;padding:16px 24px 20px;width:100%">
+    <h1 style="font-family:var(--font-heading);font-size:32px;font-weight:700;margin:0 0 4px">Credenciales</h1>
+    <p style="font-size:14px;opacity:.65;margin:0 0 24px">Gestioná tus credenciales de RENAR.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px">
+      <sc-for list="{{ actions }}" as="a" hint-placeholder-count="4">
+        <button onClick="{{ a.onClick }}" class="blueprint" style="padding:18px;background:var(--color-surface);text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:8px" style-hover="border-color:var(--color-accent)">
+          <div style="font-family:var(--font-heading);font-weight:700;font-size:15px">{{ a.title }}</div>
+          <div style="font-size:12px;opacity:.65;line-height:1.4">{{ a.desc }}</div>
+        </button>
+      </sc-for>
+    </div>
+
+    <h2 style="font-family:var(--font-heading);font-size:20px;font-weight:700;margin:0 0 14px">Mis credenciales</h2>
+    <div style="overflow-x:auto">
+      <table class="table" style="width:100%;min-width:640px">
+        <thead><tr><th>Tipo</th><th>Número</th><th>Estado</th><th>Vencimiento</th><th></th></tr></thead>
+        <tbody>
+          <sc-for list="{{ credenciales }}" as="c" hint-placeholder-count="4">
+            <tr>
+              <td>{{ c.tipo }}</td>
+              <td>{{ c.numero }}</td>
+              <td><span class="tag" style="{{ c.style }}">{{ c.estado }}</span></td>
+              <td>{{ c.vencimiento }}</td>
+              <td><button class="btn btn-ghost" onClick="{{ c.onView }}" style="padding:6px 10px;font-size:13px">Ver detalle</button></td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;background:color-mix(in srgb, var(--color-neutral-900) 55%, transparent);z-index:300;display:flex;align-items:center;justify-content:center" onClick="{{ closeModal }}">
+      <div class="dialog" style="max-width:420px" onClick="{{ stop }}">
+        <div class="dialog-title">{{ modalTitle }}</div>
+        <div class="dialog-body">{{ modalBody }}</div>
+        <div class="dialog-actions">
+          <button class="btn btn-secondary" onClick="{{ closeModal }}">Cerrar</button>
+          <button class="btn btn-primary" onClick="{{ closeModal }}">Continuar</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="flex:1"></div>
+  <dc-import name="Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const CREDENCIALES = [
+  { id: 1, tipo: 'Credencial de Legítimo Usuario', numero: 'LU-000123', estado: 'Vigente', vencimiento: '12/03/2027' },
+  { id: 2, tipo: 'Credencial de Tenencia', numero: 'CT-004521', estado: 'En trámite', vencimiento: '—' },
+  { id: 3, tipo: 'Credencial de Coleccionista', numero: 'CC-000987', estado: 'Vencida', vencimiento: '01/06/2025' },
+  { id: 4, tipo: 'Credencial de Tiro Deportivo', numero: 'TD-002210', estado: 'Observada', vencimiento: '30/11/2026' },
+];
+function style(estado) {
+  if (estado === 'Vigente') return 'background:oklch(94% 0.05 155);color:oklch(35% 0.09 155)';
+  if (estado === 'En trámite') return 'background:oklch(94% 0.06 80);color:oklch(42% 0.12 80)';
+  return 'background:oklch(94% 0.05 25);color:oklch(45% 0.15 25)';
+}
+
+class Component extends DCLogic {
+  state = { modalOpen: false, modalTitle: '', modalBody: '' };
+  open(title, body) { this.setState({ modalOpen: true, modalTitle: title, modalBody: body }); }
+
+  renderVals() {
+    return {
+      actions: [
+        { title: 'Consultar credencial', desc: 'Revisá el estado de tus credenciales vigentes.', onClick: () => this.open('Consultar credencial', 'Se muestran a continuación tus credenciales registradas y su estado actual.') },
+        { title: 'Solicitar credencial', desc: 'Iniciá una solicitud de credencial nueva.', onClick: () => this.open('Solicitar credencial', 'Vas a necesitar tu DNI y un certificado de domicilio para iniciar la solicitud.') },
+        { title: 'Renovar credencial', desc: 'Renová una credencial próxima a vencer.', onClick: () => this.open('Renovar credencial', 'Seleccioná la credencial que querés renovar desde la tabla de abajo.') },
+        { title: 'Consultar estado', desc: 'Verificá si tu credencial está vigente, vencida u observada.', onClick: () => this.open('Consultar estado', 'El estado de tus credenciales se actualiza automáticamente al procesarse cada trámite.') },
+      ],
+      credenciales: CREDENCIALES.map(c => ({ ...c, style: style(c.estado), onView: () => this.open(c.tipo, `Número ${c.numero} · Estado: ${c.estado} · Vencimiento: ${c.vencimiento}`) })),
+      modalOpen: this.state.modalOpen, modalTitle: this.state.modalTitle, modalBody: this.state.modalBody,
+      closeModal: () => this.setState({ modalOpen: false }),
+      stop: e => e.stopPropagation(),
+    };
+  }
+}
+</script>
+</body>
+</html>

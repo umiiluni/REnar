@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/styles.css">
+  <script src="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/_ds_bundle.js"></script>
+  <title>miRenar — Comercios</title>
+</helmet>
+<div style="background:var(--color-bg);min-height:100vh;display:flex;flex-direction:column">
+  <dc-import name="Header" active="comercios" hint-size="100%,116px"></dc-import>
+  <div style="max-width:1280px;margin:0 auto;padding:16px 24px 0;font-size:13px;opacity:.6">
+    <a href="Home.dc.html" style="color:var(--color-text);text-decoration:none" style-hover="text-decoration:underline">Inicio</a> / Registros / Comercios
+  </div>
+  <section style="max-width:1280px;margin:0 auto;padding:16px 24px 20px;width:100%">
+    <h1 style="font-family:var(--font-heading);font-size:32px;font-weight:700;margin:0 0 4px">Comercios</h1>
+    <p style="font-size:14px;opacity:.65;margin:0 0 24px">Panel del comercio registrado ante RENAR.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px">
+      <div class="blueprint" style="padding:20px;background:var(--color-surface);text-align:center">
+        <div style="font-size:32px;font-family:var(--font-heading);font-weight:700;color:var(--color-accent-700)">3</div>
+        <div style="font-size:13px;opacity:.7;margin-top:4px">Trámites activos</div>
+      </div>
+      <div class="blueprint" style="padding:20px;background:var(--color-surface);text-align:center">
+        <div style="font-size:32px;font-family:var(--font-heading);font-weight:700;color:var(--color-accent-700)">2</div>
+        <div style="font-size:13px;opacity:.7;margin-top:4px">Documentos pendientes</div>
+      </div>
+      <div class="blueprint" style="padding:20px;background:var(--color-surface);text-align:center">
+        <div style="font-size:32px;font-family:var(--font-heading);font-weight:700;color:var(--color-accent-700)">4</div>
+        <div style="font-size:13px;opacity:.7;margin-top:4px">Habilitaciones vigentes</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px">
+      <sc-for list="{{ sections }}" as="s" hint-placeholder-count="4">
+        <div class="blueprint" style="padding:20px;background:var(--color-surface)">
+          <div style="font-family:var(--font-heading);font-weight:700;font-size:15px;margin-bottom:6px">{{ s.title }}</div>
+          <p style="font-size:13px;opacity:.7;line-height:1.5;margin:0 0 12px">{{ s.desc }}</p>
+          <span class="tag" style="{{ s.style }}">{{ s.estado }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+  <div style="flex:1"></div>
+  <dc-import name="Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+function style(estado) {
+  if (estado === 'Vigente' || estado === 'Al día') return 'background:oklch(94% 0.05 155);color:oklch(35% 0.09 155)';
+  if (estado === 'Pendiente') return 'background:oklch(94% 0.06 80);color:oklch(42% 0.12 80)';
+  return 'background:oklch(94% 0.05 25);color:oklch(45% 0.15 25)';
+}
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      sections: [
+        { title: 'Datos del comercio', desc: 'Armería Ejemplo S.R.L. — CUIT 30-00000000-0.', estado: 'Vigente', style: style('Vigente') },
+        { title: 'Habilitaciones', desc: 'Habilitación municipal y de RENAR para venta de armas.', estado: 'Vigente', style: style('Vigente') },
+        { title: 'Trámites', desc: 'Renovación de habilitación en curso.', estado: 'Pendiente', style: style('Pendiente') },
+        { title: 'Documentación', desc: 'Falta cargar el certificado de seguridad edilicia.', estado: 'Observada', style: style('Observada') },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

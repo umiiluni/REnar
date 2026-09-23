@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/styles.css">
+  <script src="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/_ds_bundle.js"></script>
+  <title>miRenar — Mi cuenta</title>
+</helmet>
+<div style="background:var(--color-bg);min-height:100vh;display:flex;flex-direction:column">
+  <dc-import name="Header" active="cuenta" hint-size="100%,116px"></dc-import>
+  <div style="max-width:1280px;margin:0 auto;padding:16px 24px 0;font-size:13px;opacity:.6">
+    <a href="Home.dc.html" style="color:var(--color-text);text-decoration:none" style-hover="text-decoration:underline">Inicio</a> / Mi cuenta
+  </div>
+  <section style="max-width:1280px;margin:0 auto;padding:16px 24px 40px;width:100%">
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:28px">
+      <div style="width:56px;height:56px;border-radius:50%;background:var(--color-accent-700);color:var(--color-bg);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;font-family:var(--font-heading)">JP</div>
+      <div>
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:22px">Juan Pérez</div>
+        <div style="font-size:13px;opacity:.6">Cuenta verificada con miArgentina · Dato de ejemplo</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px">
+      <a href="Tramites.dc.html" class="blueprint" style="padding:20px;background:var(--color-surface);text-decoration:none;color:var(--color-text)" style-hover="border-color:var(--color-accent)">
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:15px;margin-bottom:6px">Mis trámites</div>
+        <div style="font-size:13px;opacity:.65">2 trámites en curso</div>
+      </a>
+      <a href="Pagos.dc.html" class="blueprint" style="padding:20px;background:var(--color-surface);text-decoration:none;color:var(--color-text)" style-hover="border-color:var(--color-accent)">
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:15px;margin-bottom:6px">Mis documentos</div>
+        <div style="font-size:13px;opacity:.65">Comprobantes y constancias</div>
+      </a>
+      <a href="DomicilioElectronico.dc.html" class="blueprint" style="padding:20px;background:var(--color-surface);text-decoration:none;color:var(--color-text)" style-hover="border-color:var(--color-accent)">
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:15px;margin-bottom:6px">Configuración</div>
+        <div style="font-size:13px;opacity:.65">Domicilio electrónico y preferencias</div>
+      </a>
+    </div>
+
+    <h2 style="font-family:var(--font-heading);font-size:20px;font-weight:700;margin:0 0 14px">Notificaciones recientes</h2>
+    <div class="blueprint" style="background:var(--color-surface);margin-bottom:32px">
+      <sc-for list="{{ notifs }}" as="n" hint-placeholder-count="3">
+        <div style="padding:14px 18px;border-bottom:1px solid var(--color-divider);font-size:14px">
+          <div>{{ n.text }}</div>
+          <div style="font-size:11px;opacity:.55;margin-top:3px">{{ n.time }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <a href="Home.dc.html" class="btn btn-secondary">Cerrar sesión</a>
+  </section>
+  <div style="flex:1"></div>
+  <dc-import name="Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      notifs: [
+        { text: 'Tu trámite está en revisión.', time: 'Hace 2 horas' },
+        { text: 'Tu credencial fue actualizada.', time: 'Ayer' },
+        { text: 'Tenés documentación pendiente.', time: 'Hace 3 días' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

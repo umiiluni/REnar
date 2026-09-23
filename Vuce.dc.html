@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/styles.css">
+  <script src="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/_ds_bundle.js"></script>
+  <title>miRenar — VUCE</title>
+</helmet>
+<div style="background:var(--color-bg);min-height:100vh;display:flex;flex-direction:column">
+  <dc-import name="Header" active="vuce" hint-size="100%,116px"></dc-import>
+  <div style="max-width:1280px;margin:0 auto;padding:16px 24px 0;font-size:13px;opacity:.6">
+    <a href="Home.dc.html" style="color:var(--color-text);text-decoration:none" style-hover="text-decoration:underline">Inicio</a> / Recursos / VUCE
+  </div>
+  <section style="max-width:1280px;margin:0 auto;padding:16px 24px 20px;width:100%">
+    <h1 style="font-family:var(--font-heading);font-size:32px;font-weight:700;margin:0 0 4px">Ventanilla Única de Comercio Exterior</h1>
+    <p style="font-size:14px;opacity:.65;margin:0 0 24px">VUCE — trámites de importación y exportación relacionados con RENAR.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px">
+      <div class="blueprint" style="padding:24px;background:var(--color-surface)">
+        <div class="tag tag-accent" style="margin-bottom:10px">Armas</div>
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:19px;margin-bottom:8px">VUCE — Armas</div>
+        <p style="font-size:13px;opacity:.75;line-height:1.6;margin:0 0 16px">Ventanilla Única de Comercio Exterior para trámites relacionados con armas.</p>
+        <a href="Tramites.dc.html" class="btn btn-secondary">Iniciar trámite</a>
+      </div>
+      <div class="blueprint" style="padding:24px;background:var(--color-surface)">
+        <div class="tag tag-accent" style="margin-bottom:10px">Explosivos</div>
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:19px;margin-bottom:8px">VUCE — Explosivos</div>
+        <p style="font-size:13px;opacity:.75;line-height:1.6;margin:0 0 16px">Ventanilla Única de Comercio Exterior para trámites relacionados con explosivos.</p>
+        <a href="Tramites.dc.html" class="btn btn-secondary">Iniciar trámite</a>
+      </div>
+    </div>
+  </section>
+  <div style="flex:1"></div>
+  <dc-import name="Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+</body>
+</html>

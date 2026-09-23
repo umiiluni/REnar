@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/styles.css">
+  <script src="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/_ds_bundle.js"></script>
+  <title>miRenar — Encuesta de atención</title>
+</helmet>
+<div style="background:var(--color-bg);min-height:100vh;display:flex;flex-direction:column">
+  <dc-import name="Header" active="encuesta" hint-size="100%,116px"></dc-import>
+  <div style="max-width:1280px;margin:0 auto;padding:16px 24px 0;font-size:13px;opacity:.6">
+    <a href="Home.dc.html" style="color:var(--color-text);text-decoration:none" style-hover="text-decoration:underline">Inicio</a> / Ayuda / Encuesta
+  </div>
+  <section style="max-width:560px;margin:0 auto;padding:16px 24px 40px;width:100%">
+    <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+      <div class="blueprint" style="padding:32px;background:var(--color-surface);text-align:center">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:20px;margin-bottom:8px">¡Gracias por tu opinión!</div>
+        <p style="font-size:14px;opacity:.7;margin:0 0 16px">Tu respuesta nos ayuda a mejorar el servicio.</p>
+        <a href="Home.dc.html" class="btn btn-secondary">Volver al inicio</a>
+      </div>
+      <template slot="else">
+        <h1 style="font-family:var(--font-heading);font-size:28px;font-weight:700;margin:0 0 4px;text-align:center">¿Cómo fue tu experiencia?</h1>
+        <p style="font-size:14px;opacity:.65;margin:0 0 28px;text-align:center">Tu opinión nos ayuda a mejorar miRenar.</p>
+        <div style="display:flex;justify-content:center;gap:10px;margin-bottom:24px;flex-wrap:wrap">
+          <sc-for list="{{ options }}" as="o" hint-placeholder-count="5">
+            <button onClick="{{ o.select }}" class="{{ o.className }}" style="padding:12px 16px;font-size:13px">{{ o.label }}</button>
+          </sc-for>
+        </div>
+        <div class="field" style="margin-bottom:16px">
+          <label>Contanos qué podemos mejorar</label>
+          <textarea class="input" placeholder="Tu comentario (opcional)" value="{{ comment }}" onChange="{{ onComment }}"></textarea>
+        </div>
+        <button class="btn btn-primary btn-block" style="justify-content:center" disabled="{{ !selected }}" onClick="{{ onSubmit }}">Enviar opinión</button>
+      </template>
+    </sc-if>
+  </section>
+  <div style="flex:1"></div>
+  <dc-import name="Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const LABELS = ['Muy buena', 'Buena', 'Regular', 'Mala', 'Muy mala'];
+class Component extends DCLogic {
+  state = { selected: null, comment: '', submitted: false };
+  renderVals() {
+    return {
+      options: LABELS.map(label => ({ label, className: this.state.selected === label ? 'btn btn-primary' : 'btn btn-secondary', select: () => this.setState({ selected: label }) })),
+      comment: this.state.comment, onComment: e => this.setState({ comment: e.target.value }),
+      selected: this.state.selected,
+      onSubmit: () => this.state.selected && this.setState({ submitted: true }),
+      submitted: this.state.submitted,
+    };
+  }
+}
+</script>
+</body>
+</html>

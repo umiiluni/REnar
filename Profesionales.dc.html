@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/styles.css">
+  <script src="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/_ds_bundle.js"></script>
+  <title>miRenar — Profesionales e instructores</title>
+</helmet>
+<div style="background:var(--color-bg);min-height:100vh;display:flex;flex-direction:column">
+  <dc-import name="Header" active="profesionales" hint-size="100%,116px"></dc-import>
+  <div style="max-width:1280px;margin:0 auto;padding:16px 24px 0;font-size:13px;opacity:.6">
+    <a href="Home.dc.html" style="color:var(--color-text);text-decoration:none" style-hover="text-decoration:underline">Inicio</a> / Registros / Profesionales
+  </div>
+  <section style="max-width:1280px;margin:0 auto;padding:16px 24px 20px;width:100%">
+    <h1 style="font-family:var(--font-heading);font-size:32px;font-weight:700;margin:0 0 4px">Profesionales e instructores</h1>
+    <p style="font-size:14px;opacity:.65;margin:0 0 24px">Registro profesional y estado de matrícula.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px">
+      <a href="#tabla-matriculas" class="btn btn-secondary" style="justify-content:center;padding:14px">Consultar registro</a>
+      <a href="#tabla-matriculas" class="btn btn-secondary" style="justify-content:center;padding:14px">Ver estado</a>
+      <a href="Ayuda.dc.html" class="btn btn-secondary" style="justify-content:center;padding:14px">Documentación</a>
+      <a href="Tramites.dc.html" class="btn btn-primary" style="justify-content:center;padding:14px">Iniciar trámite</a>
+    </div>
+
+    <div id="tabla-matriculas" style="overflow-x:auto">
+      <table class="table" style="width:100%;min-width:560px">
+        <thead><tr><th>Matrícula</th><th>Categoría</th><th>Estado</th><th>Vencimiento</th></tr></thead>
+        <tbody>
+          <sc-for list="{{ profesionales }}" as="p" hint-placeholder-count="2">
+            <tr>
+              <td>{{ p.matricula }}</td>
+              <td>{{ p.nombre }}</td>
+              <td><span class="tag" style="{{ p.style }}">{{ p.estado }}</span></td>
+              <td>{{ p.vencimiento }}</td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="blueprint" style="padding:20px;background:var(--color-surface);margin-top:24px">
+      <div style="font-family:var(--font-heading);font-weight:700;font-size:15px;margin-bottom:6px">Requisitos</div>
+      <p style="font-size:13px;opacity:.75;line-height:1.6;margin:0">Para inscribirte como instructor o armero matriculado necesitás título habilitante, certificado de antecedentes y aprobar la capacitación de RENAR.</p>
+    </div>
+  </section>
+  <div style="flex:1"></div>
+  <dc-import name="Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+function style(estado) {
+  if (estado === 'Vigente') return 'background:oklch(94% 0.05 155);color:oklch(35% 0.09 155)';
+  return 'background:oklch(94% 0.06 80);color:oklch(42% 0.12 80)';
+}
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      profesionales: [
+        { matricula: 'INS-00021', nombre: 'Instructor de tiro nivel I', estado: 'Vigente', vencimiento: '10/05/2027', style: style('Vigente') },
+        { matricula: 'ARM-00087', nombre: 'Armero matriculado', estado: 'En trámite', vencimiento: '—', style: style('En trámite') },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

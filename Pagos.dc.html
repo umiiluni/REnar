@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/styles.css">
+  <script src="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/_ds_bundle.js"></script>
+  <title>miRenar — Mis pagos</title>
+</helmet>
+<div style="background:var(--color-bg);min-height:100vh;display:flex;flex-direction:column">
+  <dc-import name="Header" active="pagos" hint-size="100%,116px"></dc-import>
+  <div style="max-width:1280px;margin:0 auto;padding:16px 24px 0;font-size:13px;opacity:.6">
+    <a href="Home.dc.html" style="color:var(--color-text);text-decoration:none" style-hover="text-decoration:underline">Inicio</a> / Mis pagos
+  </div>
+  <section style="max-width:1280px;margin:0 auto;padding:16px 24px 20px;width:100%">
+    <h1 style="font-family:var(--font-heading);font-size:32px;font-weight:700;margin:0 0 4px">Mis pagos</h1>
+    <p style="font-size:14px;opacity:.65;margin:0 0 24px">Pagos e importes correspondientes a tus trámites.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px">
+      <div class="blueprint" style="padding:20px;background:var(--color-surface);text-align:center">
+        <div style="font-size:26px;font-family:var(--font-heading);font-weight:700">1</div>
+        <div style="font-size:13px;opacity:.7;margin-top:4px">Pagos pendientes</div>
+      </div>
+      <div class="blueprint" style="padding:20px;background:var(--color-surface);text-align:center">
+        <div style="font-size:26px;font-family:var(--font-heading);font-weight:700">2</div>
+        <div style="font-size:13px;opacity:.7;margin-top:4px">Pagos realizados</div>
+      </div>
+      <div class="blueprint" style="padding:20px;background:var(--color-surface);text-align:center">
+        <div style="font-size:26px;font-family:var(--font-heading);font-weight:700">2</div>
+        <div style="font-size:13px;opacity:.7;margin-top:4px">Comprobantes</div>
+      </div>
+    </div>
+
+    <div style="overflow-x:auto">
+      <table class="table" style="width:100%;min-width:600px">
+        <thead><tr><th>Fecha</th><th>Concepto</th><th>Importe</th><th>Estado</th><th></th></tr></thead>
+        <tbody>
+          <sc-for list="{{ pagos }}" as="p" hint-placeholder-count="3">
+            <tr>
+              <td>{{ p.fecha }}</td>
+              <td>{{ p.concepto }}</td>
+              <td style="font-weight:600">{{ p.importe }}</td>
+              <td><span class="tag" style="{{ p.style }}">{{ p.estado }}</span></td>
+              <td><button class="btn btn-ghost" style="padding:6px 8px;font-size:12px" onClick="{{ p.onView }}">Ver comprobante</button></td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;background:color-mix(in srgb, var(--color-neutral-900) 55%, transparent);z-index:300;display:flex;align-items:center;justify-content:center" onClick="{{ closeModal }}">
+      <div class="dialog" style="max-width:400px" onClick="{{ stop }}">
+        <div class="dialog-title">Comprobante</div>
+        <div class="dialog-body">{{ modalBody }}</div>
+        <div class="dialog-actions"><button class="btn btn-primary" onClick="{{ closeModal }}">Cerrar</button></div>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="flex:1"></div>
+  <dc-import name="Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const PAGOS = [
+  { fecha: '02/09/2026', concepto: 'Renovación de credencial', importe: '$ 8.900', estado: 'Pagado' },
+  { fecha: '18/08/2026', concepto: 'Registro de arma', importe: '$ 21.300', estado: 'Pagado' },
+  { fecha: '05/09/2026', concepto: 'Habilitación de comercio', importe: '$ 65.000', estado: 'Pendiente' },
+];
+function style(estado) {
+  if (estado === 'Pagado') return 'background:oklch(94% 0.05 155);color:oklch(35% 0.09 155)';
+  return 'background:oklch(94% 0.06 80);color:oklch(42% 0.12 80)';
+}
+class Component extends DCLogic {
+  state = { modalOpen: false, modalBody: '' };
+  renderVals() {
+    return {
+      pagos: PAGOS.map(p => ({ ...p, style: style(p.estado), onView: () => this.setState({ modalOpen: true, modalBody: `${p.concepto} · ${p.importe} · ${p.fecha} · Estado: ${p.estado}` }) })),
+      modalOpen: this.state.modalOpen, modalBody: this.state.modalBody,
+      closeModal: () => this.setState({ modalOpen: false }),
+      stop: e => e.stopPropagation(),
+    };
+  }
+}
+</script>
+</body>
+</html>

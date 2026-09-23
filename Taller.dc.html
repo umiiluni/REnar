@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/styles.css">
+  <script src="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/_ds_bundle.js"></script>
+  <title>miRenar — Taller</title>
+</helmet>
+<div style="background:var(--color-bg);min-height:100vh;display:flex;flex-direction:column">
+  <dc-import name="Header" active="taller" hint-size="100%,116px"></dc-import>
+  <div style="max-width:1280px;margin:0 auto;padding:16px 24px 0;font-size:13px;opacity:.6">
+    <a href="Home.dc.html" style="color:var(--color-text);text-decoration:none" style-hover="text-decoration:underline">Inicio</a> / Taller
+  </div>
+  <section style="max-width:1280px;margin:0 auto;padding:16px 24px 20px;width:100%">
+    <h1 style="font-family:var(--font-heading);font-size:32px;font-weight:700;margin:0 0 4px">Taller</h1>
+    <p style="font-size:14px;opacity:.65;margin:0 0 24px">Registro y habilitación de talleres de recarga y reparación de armas.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px">
+      <sc-for list="{{ items }}" as="i" hint-placeholder-count="4">
+        <div class="blueprint" style="padding:20px;background:var(--color-surface)">
+          <div style="font-family:var(--font-heading);font-weight:700;font-size:15px;margin-bottom:6px">{{ i.title }}</div>
+          <p style="font-size:13px;opacity:.7;line-height:1.5;margin:0 0 12px">{{ i.desc }}</p>
+          <a href="{{ i.href }}" class="btn btn-secondary" style="font-size:13px">{{ i.cta }}</a>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+  <div style="flex:1"></div>
+  <dc-import name="Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      items: [
+        { title: 'Consultar registro de talleres', desc: 'Verificá si un taller está habilitado por RENAR.', href: '#', cta: 'Consultar' },
+        { title: 'Habilitar mi taller', desc: 'Iniciá el trámite de habilitación de tu taller.', href: 'Tramites.dc.html', cta: 'Iniciar trámite' },
+        { title: 'Documentación requerida', desc: 'Requisitos de seguridad y habilitación municipal.', href: '#', cta: 'Ver requisitos' },
+        { title: 'Estado de habilitación', desc: 'Consultá el estado de tu solicitud de habilitación.', href: '#', cta: 'Ver estado' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

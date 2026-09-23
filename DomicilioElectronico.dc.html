@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/styles.css">
+  <script src="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/_ds_bundle.js"></script>
+  <title>miRenar — Domicilio electrónico</title>
+</helmet>
+<div style="background:var(--color-bg);min-height:100vh;display:flex;flex-direction:column">
+  <dc-import name="Header" active="domicilio" hint-size="100%,116px"></dc-import>
+  <div style="max-width:1280px;margin:0 auto;padding:16px 24px 0;font-size:13px;opacity:.6">
+    <a href="Home.dc.html" style="color:var(--color-text);text-decoration:none" style-hover="text-decoration:underline">Inicio</a> / Domicilio electrónico
+  </div>
+  <section style="max-width:640px;margin:0 auto;padding:16px 24px 40px;width:100%">
+    <h1 style="font-family:var(--font-heading);font-size:32px;font-weight:700;margin:0 0 4px">Domicilio electrónico</h1>
+    <p style="font-size:14px;opacity:.7;line-height:1.6;margin:0 0 24px">Registrá tu domicilio electrónico para recibir notificaciones relacionadas con tus trámites.</p>
+
+    <div class="blueprint" style="padding:24px;background:var(--color-surface)">
+      <sc-if value="{{ registrado }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+          <span class="tag" style="background:oklch(94% 0.05 155);color:oklch(35% 0.09 155)">Domicilio electrónico registrado ✓</span>
+        </div>
+        <div style="font-size:14px;opacity:.8;margin-bottom:16px">juan.perez@ejemplo.gob.ar (dato de ejemplo)</div>
+        <button class="btn btn-secondary" onClick="{{ toggle }}">Modificar domicilio electrónico</button>
+        <template slot="else">
+          <div style="margin-bottom:16px"><span class="tag" style="background:oklch(94% 0.06 80);color:oklch(42% 0.12 80)">Domicilio electrónico pendiente</span></div>
+          <button class="btn btn-primary" onClick="{{ toggle }}">Constituir domicilio electrónico</button>
+        </template>
+      </sc-if>
+    </div>
+  </section>
+  <div style="flex:1"></div>
+  <dc-import name="Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { registrado: true };
+  renderVals() {
+    return { registrado: this.state.registrado, toggle: () => this.setState(s => ({ registrado: !s.registrado })) };
+  }
+}
+</script>
+</body>
+</html>

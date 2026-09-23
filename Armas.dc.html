@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/styles.css">
+  <script src="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/_ds_bundle.js"></script>
+  <title>miRenar — Mis armas</title>
+</helmet>
+<div style="background:var(--color-bg);min-height:100vh;display:flex;flex-direction:column">
+  <dc-import name="Header" active="armas" hint-size="100%,116px"></dc-import>
+  <div style="max-width:1280px;margin:0 auto;padding:16px 24px 0;font-size:13px;opacity:.6">
+    <a href="Home.dc.html" style="color:var(--color-text);text-decoration:none" style-hover="text-decoration:underline">Inicio</a> / Registros / Armas
+  </div>
+  <section style="max-width:1280px;margin:0 auto;padding:16px 24px 20px;width:100%">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;flex-wrap:wrap;gap:12px">
+      <div>
+        <h1 style="font-family:var(--font-heading);font-size:32px;font-weight:700;margin:0 0 4px">Mis armas</h1>
+        <p style="font-size:14px;opacity:.65;margin:0">Armas de fuego registradas a tu nombre.</p>
+      </div>
+      <a href="Tramites.dc.html" class="btn btn-primary">Registrar nueva arma</a>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="table" style="width:100%;min-width:760px">
+        <thead><tr><th>N°</th><th>Tipo</th><th>Marca</th><th>Modelo</th><th>Número de serie</th><th>Estado</th><th>Fecha de registro</th><th>Acciones</th></tr></thead>
+        <tbody>
+          <sc-for list="{{ armas }}" as="a" hint-placeholder-count="3">
+            <tr>
+              <td>{{ a.id }}</td>
+              <td>{{ a.tipo }}</td>
+              <td>{{ a.marca }}</td>
+              <td>{{ a.modelo }}</td>
+              <td>{{ a.serie }}</td>
+              <td><span class="tag" style="{{ a.style }}">{{ a.estado }}</span></td>
+              <td>{{ a.fecha }}</td>
+              <td>
+                <div style="display:flex;gap:6px">
+                  <button class="btn btn-ghost" style="padding:6px 8px;font-size:12px" onClick="{{ a.onDetail }}">Ver detalle</button>
+                  <button class="btn btn-ghost" style="padding:6px 8px;font-size:12px" onClick="{{ a.onDocs }}">Documentación</button>
+                </div>
+              </td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;background:color-mix(in srgb, var(--color-neutral-900) 55%, transparent);z-index:300;display:flex;align-items:center;justify-content:center" onClick="{{ closeModal }}">
+      <div class="dialog" style="max-width:420px" onClick="{{ stop }}">
+        <div class="dialog-title">{{ modalTitle }}</div>
+        <div class="dialog-body">{{ modalBody }}</div>
+        <div class="dialog-actions"><button class="btn btn-primary" onClick="{{ closeModal }}">Cerrar</button></div>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="flex:1"></div>
+  <dc-import name="Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const ARMAS = [
+  { id: 1, tipo: 'Pistola', marca: 'Bersa', modelo: 'TPR9', serie: 'AR-00123456', estado: 'Vigente', fecha: '14/02/2021' },
+  { id: 2, tipo: 'Escopeta', marca: 'Ballistec', modelo: 'CBC 586', serie: 'ES-00998877', estado: 'Vigente', fecha: '03/09/2019' },
+  { id: 3, tipo: 'Revólver', marca: 'Taurus', modelo: '73B4', serie: 'RV-00445566', estado: 'Observada', fecha: '22/11/2022' },
+];
+function style(estado) {
+  if (estado === 'Vigente') return 'background:oklch(94% 0.05 155);color:oklch(35% 0.09 155)';
+  return 'background:oklch(94% 0.05 25);color:oklch(45% 0.15 25)';
+}
+class Component extends DCLogic {
+  state = { modalOpen: false, modalTitle: '', modalBody: '' };
+  open(title, body) { this.setState({ modalOpen: true, modalTitle: title, modalBody: body }); }
+  renderVals() {
+    return {
+      armas: ARMAS.map(a => ({ ...a, style: style(a.estado),
+        onDetail: () => this.open(`${a.tipo} ${a.marca} ${a.modelo}`, `Número de serie ${a.serie} · Estado: ${a.estado} · Registrada el ${a.fecha}.`),
+        onDocs: () => this.open('Documentación', `Documentación asociada al arma con serie ${a.serie}: credencial de tenencia y guía de tenencia.`) })),
+      modalOpen: this.state.modalOpen, modalTitle: this.state.modalTitle, modalBody: this.state.modalBody,
+      closeModal: () => this.setState({ modalOpen: false }),
+      stop: e => e.stopPropagation(),
+    };
+  }
+}
+</script>
+</body>
+</html>

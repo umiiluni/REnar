@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/styles.css">
+  <script src="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/_ds_bundle.js"></script>
+  <title>miRenar — Nomenclador</title>
+</helmet>
+<div style="background:var(--color-bg);min-height:100vh;display:flex;flex-direction:column">
+  <dc-import name="Header" active="nomenclador" hint-size="100%,116px"></dc-import>
+  <div style="max-width:1280px;margin:0 auto;padding:16px 24px 0;font-size:13px;opacity:.6">
+    <a href="Home.dc.html" style="color:var(--color-text);text-decoration:none" style-hover="text-decoration:underline">Inicio</a> / Recursos / Nomenclador
+  </div>
+  <section style="max-width:1280px;margin:0 auto;padding:16px 24px 20px;width:100%">
+    <h1 style="font-family:var(--font-heading);font-size:32px;font-weight:700;margin:0 0 4px">Clasificación y nomenclador</h1>
+    <p style="font-size:14px;opacity:.65;margin:0 0 24px">Buscá la clasificación oficial de armas, municiones y materiales.</p>
+
+    <div style="position:relative;max-width:440px;margin-bottom:16px">
+      <input class="input" type="text" placeholder="Buscar por nombre, categoría o código..." value="{{ query }}" onChange="{{ onQuery }}" style="padding-left:34px" />
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);opacity:.5"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>
+    </div>
+    <div style="display:flex;gap:12px;margin-bottom:20px">
+      <select class="input" style="width:auto;min-width:180px" value="{{ fCategoria }}" onChange="{{ onCategoria }}">
+        <sc-for list="{{ categorias }}" as="c" hint-placeholder-count="4"><option value="{{ c }}">{{ c }}</option></sc-for>
+      </select>
+    </div>
+
+    <div style="overflow-x:auto">
+      <table class="table" style="width:100%;min-width:680px">
+        <thead><tr><th>Código</th><th>Categoría</th><th>Descripción</th><th>Tipo</th><th>Estado</th><th></th></tr></thead>
+        <tbody>
+          <sc-for list="{{ filtered }}" as="n" hint-placeholder-count="4">
+            <tr>
+              <td>{{ n.codigo }}</td>
+              <td>{{ n.categoria }}</td>
+              <td>{{ n.descripcion }}</td>
+              <td>{{ n.tipo }}</td>
+              <td><span class="tag" style="{{ n.style }}">{{ n.estado }}</span></td>
+              <td><button class="btn btn-ghost" style="padding:6px 8px;font-size:12px" onClick="{{ n.onOpen }}">Ver detalle</button></td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+    </div>
+    <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:40px 0;text-align:center;opacity:.6;font-size:13px">No se encontraron resultados para "{{ query }}"</div>
+    </sc-if>
+  </section>
+
+  <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;background:color-mix(in srgb, var(--color-neutral-900) 55%, transparent);z-index:300;display:flex;align-items:center;justify-content:center" onClick="{{ closeModal }}">
+      <div class="dialog" style="max-width:440px" onClick="{{ stop }}">
+        <div class="dialog-title">{{ modalTitle }}</div>
+        <div class="dialog-body">{{ modalBody }}</div>
+        <div class="dialog-actions"><button class="btn btn-primary" onClick="{{ closeModal }}">Cerrar</button></div>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="flex:1"></div>
+  <dc-import name="Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const NOMENCLADOR = [
+  { codigo: 'N-1001', categoria: 'Armas cortas', descripcion: 'Pistola semiautomática calibre 9mm', tipo: 'Uso civil condicional', estado: 'Vigente' },
+  { codigo: 'N-1002', categoria: 'Armas largas', descripcion: 'Escopeta de caño liso', tipo: 'Uso civil', estado: 'Vigente' },
+  { codigo: 'N-2001', categoria: 'Municiones', descripcion: 'Cartuchos calibre .38', tipo: 'Uso civil condicional', estado: 'Vigente' },
+  { codigo: 'N-3001', categoria: 'Materiales explosivos', descripcion: 'Pólvora negra', tipo: 'Uso restringido', estado: 'En revisión' },
+];
+function style(estado) {
+  if (estado === 'Vigente') return 'background:oklch(94% 0.05 155);color:oklch(35% 0.09 155)';
+  return 'background:oklch(94% 0.06 80);color:oklch(42% 0.12 80)';
+}
+class Component extends DCLogic {
+  state = { query: '', fCategoria: 'Todas', modalOpen: false, modalTitle: '', modalBody: '' };
+  renderVals() {
+    const q = this.state.query.trim().toLowerCase();
+    const filtered = NOMENCLADOR.filter(n =>
+      (!q || n.descripcion.toLowerCase().includes(q) || n.codigo.toLowerCase().includes(q) || n.categoria.toLowerCase().includes(q)) &&
+      (this.state.fCategoria === 'Todas' || n.categoria === this.state.fCategoria)
+    ).map(n => ({ ...n, style: style(n.estado), onOpen: () => this.setState({ modalOpen: true, modalTitle: `${n.codigo} — ${n.descripcion}`, modalBody: `Categoría: ${n.categoria} · Tipo: ${n.tipo} · Estado: ${n.estado}` }) }));
+    return {
+      query: this.state.query, onQuery: e => this.setState({ query: e.target.value }),
+      categorias: ['Todas', 'Armas cortas', 'Armas largas', 'Municiones', 'Materiales explosivos'],
+      fCategoria: this.state.fCategoria, onCategoria: e => this.setState({ fCategoria: e.target.value }),
+      filtered, noResults: filtered.length === 0,
+      modalOpen: this.state.modalOpen, modalTitle: this.state.modalTitle, modalBody: this.state.modalBody,
+      closeModal: () => this.setState({ modalOpen: false }),
+      stop: e => e.stopPropagation(),
+    };
+  }
+}
+</script>
+</body>
+</html>

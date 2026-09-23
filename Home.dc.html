@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/styles.css">
+  <script src="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/_ds_bundle.js"></script>
+  <title>miRenar — Inicio</title>
+</helmet>
+<div style="background:var(--color-bg);min-height:100vh;display:flex;flex-direction:column">
+  <dc-import name="Header" active="inicio" hint-size="100%,116px"></dc-import>
+
+  <section style="max-width:1280px;margin:0 auto;padding:64px 24px 48px;display:grid;grid-template-columns:1.1fr 0.9fr;gap:40px;align-items:center">
+    <div>
+      <div class="tag tag-accent" style="margin-bottom:16px">Portal de trámites</div>
+      <h1 style="font-family:var(--font-heading);font-size:44px;line-height:1.05;font-weight:700;margin:0 0 16px;max-width:560px">Realizá tus trámites de manera simple y segura</h1>
+      <p style="font-size:17px;color:var(--color-text);opacity:.75;max-width:520px;margin:0 0 28px;line-height:1.5">Gestioná credenciales, trámites, registros y consultas desde un único lugar.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <a href="Perfil.dc.html" class="btn btn-primary" style="padding:12px 22px;font-size:15px">Iniciar sesión</a>
+        <a href="Tramites.dc.html" class="btn btn-secondary" style="padding:12px 22px;font-size:15px">Consultar trámites</a>
+      </div>
+    </div>
+    <div class="blueprint" style="padding:32px;background:var(--color-surface)">
+      <div style="font-family:var(--font-heading);font-weight:700;font-size:20px;margin-bottom:6px">Accedé a tus trámites</div>
+      <p style="font-size:14px;opacity:.75;line-height:1.5;margin:0 0 18px">Para gestionar tus trámites de RENAR necesitás ingresar con tu cuenta de miArgentina.</p>
+      <a href="Perfil.dc.html" class="btn btn-primary btn-block" style="justify-content:center">Ingresar con miArgentina →</a>
+      <div class="hr"></div>
+      <div style="font-family:var(--font-heading);font-weight:600;font-size:15px;margin-bottom:4px">¿Es tu primera vez?</div>
+      <p style="font-size:13px;opacity:.75;line-height:1.5;margin:0 0 14px">Creá tu cuenta de miArgentina para comenzar a utilizar los servicios digitales.</p>
+      <a href="Perfil.dc.html" class="btn btn-secondary btn-block" style="justify-content:center">Crear cuenta</a>
+      <p style="font-size:11px;opacity:.55;margin:14px 0 0;text-align:center">Serás dirigido al sistema de autenticación de miArgentina.</p>
+    </div>
+  </section>
+
+  <section style="max-width:1280px;margin:0 auto;padding:16px 24px 64px;width:100%">
+    <h2 style="font-family:var(--font-heading);font-size:26px;font-weight:700;margin:0 0 6px">¿Qué necesitás hacer?</h2>
+    <p style="font-size:14px;opacity:.65;margin:0 0 28px">Elegí una opción para empezar.</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+      <sc-for list="{{ cards }}" as="c" hint-placeholder-count="6">
+        <a href="{{ c.href }}" class="blueprint" style="padding:24px;background:var(--color-bg);text-decoration:none;color:var(--color-text);display:flex;flex-direction:column;gap:12px;transition:transform .15s" style-hover="border-color:var(--color-accent)">
+          <div style="width:40px;height:40px;background:var(--color-accent-100);color:var(--color-accent-700);display:flex;align-items:center;justify-content:center">{{ c.icon }}</div>
+          <div style="font-family:var(--font-heading);font-weight:700;font-size:17px">{{ c.title }}</div>
+          <div style="font-size:13px;opacity:.7;line-height:1.5;flex:1">{{ c.desc }}</div>
+          <div style="font-size:13px;font-weight:600;color:var(--color-accent-700);display:flex;align-items:center;gap:4px">Continuar →</div>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="background:var(--color-surface);padding:48px 24px;flex:1">
+    <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+      <sc-for list="{{ quickLinks }}" as="q" hint-placeholder-count="4">
+        <a href="{{ q.href }}" style="text-decoration:none;color:var(--color-text);padding:18px;border:1px solid var(--color-divider);background:var(--color-bg);display:flex;flex-direction:column;gap:6px" style-hover="border-color:var(--color-accent)">
+          <div style="font-family:var(--font-heading);font-weight:600;font-size:14px">{{ q.title }}</div>
+          <div style="font-size:12px;opacity:.6">{{ q.desc }}</div>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+
+  <dc-import name="Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+function icon(paths) {
+  return React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5 },
+    paths.map((p, i) => React.createElement(p.tag, { key: i, ...p.attrs })));
+}
+const ICON_DOC = icon([{tag:'path',attrs:{d:'M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z'}},{tag:'path',attrs:{d:'M14 2v6h6'}}]);
+const ICON_SEARCH = icon([{tag:'circle',attrs:{cx:11,cy:11,r:7}},{tag:'path',attrs:{d:'M21 21l-4.3-4.3'}}]);
+const ICON_ID = icon([{tag:'rect',attrs:{x:2,y:5,width:20,height:14,rx:1}},{tag:'circle',attrs:{cx:8,cy:12,r:2}},{tag:'path',attrs:{d:'M14 10h6M14 14h4'}}]);
+const ICON_GUN = icon([{tag:'path',attrs:{d:'M3 13h11l2-4h5v4h-2v3h-4v-3H8l-2 4H3z'}}]);
+const ICON_BOX = icon([{tag:'path',attrs:{d:'M21 8l-9-5-9 5 9 5 9-5z'}},{tag:'path',attrs:{d:'M3 8v8l9 5 9-5V8'}}]);
+const ICON_USER = icon([{tag:'circle',attrs:{cx:12,cy:8,r:4}},{tag:'path',attrs:{d:'M4 21v-1a8 8 0 0116 0v1'}}]);
+
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      cards: [
+        { title: 'Realizar un trámite', desc: 'Iniciá una solicitud nueva ante RENAR.', href: 'Tramites.dc.html', icon: ICON_DOC },
+        { title: 'Consultar un trámite', desc: 'Seguí el estado de tus solicitudes en curso.', href: 'Tramites.dc.html', icon: ICON_SEARCH },
+        { title: 'Gestionar una credencial', desc: 'Solicitá, renová o consultá tu credencial.', href: 'Credenciales.dc.html', icon: ICON_ID },
+        { title: 'Consultar información sobre armas', desc: 'Revisá tus armas registradas y su documentación.', href: 'Armas.dc.html', icon: ICON_GUN },
+        { title: 'Consultar municiones', desc: 'Información y trámites relacionados con municiones.', href: 'Municiones.dc.html', icon: ICON_BOX },
+        { title: 'Acceder a mi cuenta', desc: 'Revisá tus datos, notificaciones y documentos.', href: 'Perfil.dc.html', icon: ICON_USER },
+      ],
+      quickLinks: [
+        { title: 'Nomenclador', desc: 'Clasificación de materiales', href: 'Nomenclador.dc.html' },
+        { title: 'Aranceles', desc: 'Valores vigentes de trámites', href: 'Aranceles.dc.html' },
+        { title: 'Puntos fronterizos', desc: 'Estado y horarios', href: 'PuntosFronterizos.dc.html' },
+        { title: 'Estado del sistema', desc: 'Disponibilidad de servicios', href: 'EstadoSistema.dc.html' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

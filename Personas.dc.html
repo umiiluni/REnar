@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/styles.css">
+  <script src="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/_ds_bundle.js"></script>
+  <title>miRenar — Persona</title>
+</helmet>
+<div style="background:var(--color-bg);min-height:100vh;display:flex;flex-direction:column">
+  <dc-import name="Header" active="personas" hint-size="100%,116px"></dc-import>
+  <div style="max-width:1280px;margin:0 auto;padding:16px 24px 0;font-size:13px;opacity:.6">
+    <a href="Home.dc.html" style="color:var(--color-text);text-decoration:none" style-hover="text-decoration:underline">Inicio</a> / Registros / Personas
+  </div>
+  <section style="max-width:1280px;margin:0 auto;padding:16px 24px 20px;width:100%">
+    <h1 style="font-family:var(--font-heading);font-size:32px;font-weight:700;margin:0 0 4px">Datos personales</h1>
+    <p style="font-size:14px;opacity:.65;margin:0 0 24px">Información registrada en RENAR. Datos de ejemplo con fines de prototipo.</p>
+
+    <div class="blueprint" style="padding:24px;background:var(--color-surface);margin-bottom:28px">
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px 32px">
+        <sc-for list="{{ datos }}" as="d" hint-placeholder-count="8">
+          <div>
+            <div style="font-size:12px;opacity:.6;margin-bottom:3px">{{ d.label }}</div>
+            <div style="font-size:15px;font-weight:600">{{ d.value }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <h2 style="font-family:var(--font-heading);font-size:20px;font-weight:700;margin:0 0 14px">Estado registral</h2>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px">
+      <sc-for list="{{ registros }}" as="r" hint-placeholder-count="2">
+        <div class="blueprint" style="padding:20px;background:var(--color-surface)">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+            <div style="font-family:var(--font-heading);font-weight:700;font-size:15px">{{ r.tipo }}</div>
+            <span class="tag" style="{{ r.style }}">{{ r.estado }}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">
+            <div><span style="opacity:.6">Fecha:</span> {{ r.fecha }}</div>
+            <div><span style="opacity:.6">Vencimiento:</span> {{ r.vencimiento }}</div>
+            <div><span style="opacity:.6">Clase:</span> {{ r.clase }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+  <div style="flex:1"></div>
+  <dc-import name="Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+function style(estado) {
+  if (estado === 'Vigente') return 'background:oklch(94% 0.05 155);color:oklch(35% 0.09 155)';
+  if (estado === 'En trámite') return 'background:oklch(94% 0.06 80);color:oklch(42% 0.12 80)';
+  return 'background:oklch(94% 0.05 25);color:oklch(45% 0.15 25)';
+}
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      datos: [
+        { label: 'Nombre', value: 'Juan Pérez (dato de ejemplo)' },
+        { label: 'DNI', value: '00.000.000' },
+        { label: 'CUIL', value: '20-00000000-0' },
+        { label: 'Fecha de nacimiento', value: '05/04/1985' },
+        { label: 'Nacionalidad', value: 'Argentina' },
+        { label: 'Domicilio real', value: 'Av. de ejemplo 1234, CABA' },
+        { label: 'Domicilio de guarda', value: 'Calle de ejemplo 567, CABA' },
+        { label: 'Domicilio electrónico', value: 'Registrado ✓' },
+      ],
+      registros: [
+        { tipo: 'Legítimo Usuario', estado: 'Vigente', fecha: '10/03/2022', vencimiento: '10/03/2027', clase: 'Categoría B', style: style('Vigente') },
+        { tipo: 'Tenencia de armas', estado: 'En trámite', fecha: '01/09/2026', vencimiento: '—', clase: 'Categoría A', style: style('En trámite') },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

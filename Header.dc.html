@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/styles.css">
+  <script src="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/_ds_bundle.js"></script>
+  <style>
+    @media (max-width: 860px) {
+      .om-desktop-nav { display: none !important; }
+      .om-search-wrap { display: none !important; }
+      .om-mobile-toggle { display: flex !important; }
+    }
+  </style>
+</helmet>
+<div style="position:sticky;top:0;z-index:100;background:var(--color-bg);border-bottom:1px solid var(--color-divider)">
+  <div style="display:flex;align-items:center;gap:20px;padding:12px 24px;max-width:1280px;margin:0 auto">
+    <a href="Home.dc.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--color-text);flex:none">
+      <div style="width:34px;height:34px;background:var(--color-accent);display:flex;align-items:center;justify-content:center;color:var(--color-bg);font-family:var(--font-heading);font-weight:700;font-size:15px">R</div>
+      <div style="line-height:1.1">
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:18px;letter-spacing:.02em">RENAR</div>
+        <div style="font-size:10px;color:var(--color-text);opacity:.6;text-transform:uppercase;letter-spacing:.06em">Registro Nacional de Armas</div>
+      </div>
+    </a>
+    <div style="flex:1;max-width:420px;position:relative" class="om-search-wrap">
+      <input class="input" type="text" placeholder="¿Qué necesitás hacer?" value="{{ query }}" onChange="{{ onQueryChange }}" onFocus="{{ onSearchFocus }}" onBlur="{{ onSearchBlur }}" aria-label="Buscador global" style="padding-left:34px" />
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);opacity:.55;pointer-events:none"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>
+      <sc-if value="{{ showResults }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;top:44px;left:0;right:0;background:var(--color-bg);border:1px solid var(--color-divider);box-shadow:var(--shadow-md);z-index:50;max-height:320px;overflow:auto">
+          <sc-if value="{{ hasResults }}" hint-placeholder-val="{{ true }}">
+            <sc-for list="{{ results }}" as="r" hint-placeholder-count="3">
+              <a href="{{ r.href }}" style="display:flex;justify-content:space-between;gap:10px;padding:10px 14px;text-decoration:none;color:var(--color-text);font-size:14px;border-bottom:1px solid var(--color-divider)" style-hover="background:var(--color-accent-100)">
+                <span>{{ r.label }}</span>
+                <span style="font-size:11px;color:var(--color-text);opacity:.5;text-transform:uppercase">{{ r.group }}</span>
+              </a>
+            </sc-for>
+            <template slot="else"><div style="padding:14px;font-size:13px;opacity:.6">Sin resultados para "{{ query }}"</div></template>
+          </sc-if>
+        </div>
+      </sc-if>
+    </div>
+    <div style="flex:1"></div>
+    <div style="position:relative;flex:none">
+      <button class="btn btn-icon" aria-label="Notificaciones" onClick="{{ toggleNotifs }}" style="position:relative">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.7 21a2 2 0 01-3.4 0"></path></svg>
+        <sc-if value="{{ hasNotifs }}" hint-placeholder-val="{{ true }}">
+          <span style="position:absolute;top:2px;right:2px;background:var(--color-accent);color:var(--color-bg);font-size:10px;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 3px">{{ notifCount }}</span>
+        </sc-if>
+      </button>
+      <sc-if value="{{ notifsOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;top:44px;right:0;width:300px;background:var(--color-bg);border:1px solid var(--color-divider);box-shadow:var(--shadow-md);z-index:50">
+          <div style="padding:12px 14px;font-family:var(--font-heading);font-weight:600;border-bottom:1px solid var(--color-divider)">Notificaciones</div>
+          <sc-for list="{{ notifications }}" as="n" hint-placeholder-count="3">
+            <div style="padding:12px 14px;font-size:13px;border-bottom:1px solid var(--color-divider)">
+              <div>{{ n.text }}</div>
+              <div style="font-size:11px;opacity:.55;margin-top:3px">{{ n.time }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+    <div style="position:relative;flex:none">
+      <button onClick="{{ toggleAccount }}" style="display:flex;align-items:center;gap:8px;background:none;border:1px solid transparent;cursor:pointer;padding:6px 8px;border-radius:var(--radius-md)" style-hover="background:color-mix(in srgb, var(--color-text) 6%, transparent)">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--color-accent-700);color:var(--color-bg);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700">JP</div>
+        <div style="text-align:left;line-height:1.1">
+          <div style="font-size:13px;font-weight:600">Juan Pérez</div>
+          <div style="font-size:11px;opacity:.55">Cuenta verificada</div>
+        </div>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"></path></svg>
+      </button>
+      <sc-if value="{{ accountOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;top:48px;right:0;width:200px;background:var(--color-bg);border:1px solid var(--color-divider);box-shadow:var(--shadow-md);z-index:50">
+          <a href="Perfil.dc.html" style="display:block;padding:10px 14px;font-size:14px;text-decoration:none;color:var(--color-text)" style-hover="background:var(--color-accent-100)">Mi perfil</a>
+          <a href="Tramites.dc.html" style="display:block;padding:10px 14px;font-size:14px;text-decoration:none;color:var(--color-text)" style-hover="background:var(--color-accent-100)">Mis trámites</a>
+          <a href="Pagos.dc.html" style="display:block;padding:10px 14px;font-size:14px;text-decoration:none;color:var(--color-text)" style-hover="background:var(--color-accent-100)">Mis documentos</a>
+          <a href="Perfil.dc.html" style="display:block;padding:10px 14px;font-size:14px;text-decoration:none;color:var(--color-text)" style-hover="background:var(--color-accent-100)">Configuración</a>
+          <div class="hr" style="margin:0"></div>
+          <a href="Home.dc.html" style="display:block;padding:10px 14px;font-size:14px;text-decoration:none;color:var(--color-accent-800)" style-hover="background:var(--color-accent-100)">Cerrar sesión</a>
+        </div>
+      </sc-if>
+    </div>
+    <button class="btn btn-icon om-mobile-toggle" aria-label="Abrir menú" onClick="{{ toggleMobile }}" style="display:none">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+    </button>
+  </div>
+  <nav style="border-top:1px solid var(--color-divider);max-width:1280px;margin:0 auto;padding:0 24px;display:flex;gap:4px" class="om-desktop-nav">
+    <a href="Home.dc.html" style="padding:10px 14px;font-family:var(--font-heading);font-size:14px;font-weight:600;text-decoration:none;color:var(--color-text);border-bottom:2px solid transparent" style-hover="border-color:var(--color-accent)">Inicio</a>
+    <sc-for list="{{ groups }}" as="g" hint-placeholder-count="4">
+      <div style="position:relative" onMouseEnter="{{ g.open }}" onMouseLeave="{{ g.close }}">
+        <a href="{{ g.href }}" style="padding:10px 14px;display:flex;align-items:center;gap:5px;font-family:var(--font-heading);font-size:14px;font-weight:600;text-decoration:none;color:var(--color-text);border-bottom:2px solid transparent" style-hover="border-color:var(--color-accent)">
+          {{ g.label }}
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"></path></svg>
+        </a>
+        <sc-if value="{{ g.isOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;top:100%;left:0;background:var(--color-bg);border:1px solid var(--color-divider);box-shadow:var(--shadow-md);min-width:280px;z-index:60;padding:6px">
+            <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="4">
+              <a href="{{ it.href }}" style="display:block;padding:10px 12px;text-decoration:none;color:var(--color-text);border-radius:var(--radius-sm)" style-hover="background:var(--color-accent-100)">
+                <div style="font-size:14px;font-weight:600">{{ it.label }}</div>
+                <div style="font-size:12px;opacity:.6;margin-top:2px">{{ it.desc }}</div>
+              </a>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+    </sc-for>
+    <div style="flex:1"></div>
+  </nav>
+  <sc-if value="{{ mobileOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;background:color-mix(in srgb, var(--color-neutral-900) 55%, transparent);z-index:200" onClick="{{ toggleMobile }}">
+      <div style="background:var(--color-bg);width:min(320px,88vw);height:100%;overflow:auto;padding:16px" onClick="{{ stop }}">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div style="font-family:var(--font-heading);font-weight:700;font-size:18px">Menú</div>
+          <button class="btn btn-icon" onClick="{{ toggleMobile }}" aria-label="Cerrar menú">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+          </button>
+        </div>
+        <a href="Home.dc.html" style="display:block;padding:12px 4px;font-weight:600;text-decoration:none;color:var(--color-text);border-bottom:1px solid var(--color-divider)">Inicio</a>
+        <sc-for list="{{ groups }}" as="g" hint-placeholder-count="4">
+          <div style="border-bottom:1px solid var(--color-divider)">
+            <button onClick="{{ g.toggleMobile }}" style="display:flex;width:100%;justify-content:space-between;align-items:center;padding:12px 4px;background:none;border:none;font-weight:600;font-size:15px;cursor:pointer;color:var(--color-text)">
+              {{ g.label }}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"></path></svg>
+            </button>
+            <sc-if value="{{ g.mobileOpenState }}" hint-placeholder-val="{{ false }}">
+              <div style="padding-bottom:8px">
+                <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="4">
+                  <a href="{{ it.href }}" style="display:block;padding:8px 12px;font-size:14px;text-decoration:none;color:var(--color-text);opacity:.85">{{ it.label }}</a>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;active&quot;: {&quot;editor&quot;: null, &quot;default&quot;: &quot;inicio&quot;, &quot;tsType&quot;: &quot;string&quot;}}">
+const NAV_GROUPS = [
+  { label: 'Trámites', href: 'Tramites.dc.html', items: [
+    { label: 'Solicitar trámite', desc: 'Iniciá un trámite nuevo', href: 'Tramites.dc.html' },
+    { label: 'Consultar trámites', desc: 'Buscá trámites disponibles', href: 'Tramites.dc.html' },
+    { label: 'Estado de trámites', desc: 'Seguí el avance de tus solicitudes', href: 'Tramites.dc.html' },
+  ]},
+  { label: 'Registros', href: 'Personas.dc.html', items: [
+    { label: 'Personas', desc: 'Datos personales y estado registral', href: 'Personas.dc.html' },
+    { label: 'Armas', desc: 'Tus armas registradas', href: 'Armas.dc.html' },
+    { label: 'Comercios', desc: 'Habilitaciones y documentación', href: 'Comercios.dc.html' },
+    { label: 'Profesionales / Instructores', desc: 'Registro profesional', href: 'Profesionales.dc.html' },
+  ]},
+  { label: 'Recursos', href: 'Nomenclador.dc.html', items: [
+    { label: 'Nomenclador', desc: 'Clasificación de materiales', href: 'Nomenclador.dc.html' },
+    { label: 'Aranceles', desc: 'Valores de trámites', href: 'Aranceles.dc.html' },
+    { label: 'VUCE — Armas', desc: 'Comercio exterior de armas', href: 'Vuce.dc.html' },
+    { label: 'VUCE — Explosivos', desc: 'Comercio exterior de explosivos', href: 'Vuce.dc.html' },
+    { label: 'Empresas de destrucción MUE', desc: 'Materiales de uso específico', href: 'Destruccion.dc.html' },
+  ]},
+  { label: 'Ayuda', href: 'Ayuda.dc.html', items: [
+    { label: 'Preguntas frecuentes', desc: 'Respuestas rápidas', href: 'Ayuda.dc.html' },
+    { label: 'Contacto', desc: 'Hablá con nosotros', href: 'Ayuda.dc.html' },
+    { label: 'Estado del sistema', desc: 'Disponibilidad de servicios', href: 'EstadoSistema.dc.html' },
+    { label: 'Encuesta de atención', desc: 'Contanos tu experiencia', href: 'Encuesta.dc.html' },
+  ]},
+];
+const NOTIFICATIONS = [
+  { id: 1, text: 'Tu trámite está en revisión.', time: 'Hace 2 horas' },
+  { id: 2, text: 'Tu credencial fue actualizada.', time: 'Ayer' },
+  { id: 3, text: 'Tenés documentación pendiente.', time: 'Hace 3 días' },
+];
+const SEARCH_INDEX = [
+  { label: 'Credenciales', href: 'Credenciales.dc.html', group: 'Sección' },
+  { label: 'Solicitar credencial', href: 'Credenciales.dc.html', group: 'Trámite' },
+  { label: 'Renovar credencial', href: 'Credenciales.dc.html', group: 'Trámite' },
+  { label: 'Consultar estado de credencial', href: 'Credenciales.dc.html', group: 'Trámite' },
+  { label: 'Trámites', href: 'Tramites.dc.html', group: 'Sección' },
+  { label: 'Municiones', href: 'Municiones.dc.html', group: 'Sección' },
+  { label: 'Mis armas', href: 'Armas.dc.html', group: 'Sección' },
+  { label: 'Comercios', href: 'Comercios.dc.html', group: 'Sección' },
+  { label: 'Profesionales e instructores', href: 'Profesionales.dc.html', group: 'Sección' },
+  { label: 'Nomenclador', href: 'Nomenclador.dc.html', group: 'Sección' },
+  { label: 'Aranceles', href: 'Aranceles.dc.html', group: 'Sección' },
+  { label: 'Puntos fronterizos', href: 'PuntosFronterizos.dc.html', group: 'Sección' },
+  { label: 'Pagos', href: 'Pagos.dc.html', group: 'Sección' },
+  { label: 'Estado del sistema', href: 'EstadoSistema.dc.html', group: 'Sección' },
+  { label: 'Domicilio electrónico', href: 'DomicilioElectronico.dc.html', group: 'Sección' },
+];
+
+class Component extends DCLogic {
+  state = {
+    query: '', showResults: false, notifsOpen: false, accountOpen: false, mobileOpen: false,
+    openGroup: null, mobileGroupOpen: {},
+  };
+
+  renderVals() {
+    const q = this.state.query.trim().toLowerCase();
+    const results = q ? SEARCH_INDEX.filter(r => r.label.toLowerCase().includes(q)) : [];
+    const groups = NAV_GROUPS.map((g, i) => ({
+      ...g,
+      isOpen: this.state.openGroup === i,
+      open: () => this.setState({ openGroup: i }),
+      close: () => this.setState(s => s.openGroup === i ? { openGroup: null } : {}),
+      mobileOpenState: !!this.state.mobileGroupOpen[i],
+      toggleMobile: () => this.setState(s => ({ mobileGroupOpen: { ...s.mobileGroupOpen, [i]: !s.mobileGroupOpen[i] } })),
+    }));
+    return {
+      query: this.state.query,
+      onQueryChange: e => this.setState({ query: e.target.value }),
+      onSearchFocus: () => this.setState({ showResults: true }),
+      onSearchBlur: () => setTimeout(() => this.setState({ showResults: false }), 150),
+      showResults: this.state.showResults && q.length > 0,
+      hasResults: results.length > 0,
+      results,
+      groups,
+      notifications: NOTIFICATIONS,
+      hasNotifs: NOTIFICATIONS.length > 0,
+      notifCount: NOTIFICATIONS.length,
+      notifsOpen: this.state.notifsOpen,
+      toggleNotifs: () => this.setState(s => ({ notifsOpen: !s.notifsOpen, accountOpen: false })),
+      accountOpen: this.state.accountOpen,
+      toggleAccount: () => this.setState(s => ({ accountOpen: !s.accountOpen, notifsOpen: false })),
+      mobileOpen: this.state.mobileOpen,
+      toggleMobile: () => this.setState(s => ({ mobileOpen: !s.mobileOpen })),
+      stop: e => e.stopPropagation(),
+    };
+  }
+}
+</script>
+</body>
+</html>

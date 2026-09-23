@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/styles.css">
+  <script src="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/_ds_bundle.js"></script>
+  <title>miRenar — Estado del sistema</title>
+</helmet>
+<div style="background:var(--color-bg);min-height:100vh;display:flex;flex-direction:column">
+  <dc-import name="Header" active="estado" hint-size="100%,116px"></dc-import>
+  <div style="max-width:1280px;margin:0 auto;padding:16px 24px 0;font-size:13px;opacity:.6">
+    <a href="Home.dc.html" style="color:var(--color-text);text-decoration:none" style-hover="text-decoration:underline">Inicio</a> / Ayuda / Estado del sistema
+  </div>
+  <section style="max-width:900px;margin:0 auto;padding:16px 24px 20px;width:100%">
+    <h1 style="font-family:var(--font-heading);font-size:32px;font-weight:700;margin:0 0 4px">Estado del sistema</h1>
+    <p style="font-size:14px;opacity:.65;margin:0 0 24px">Disponibilidad actual de los servicios de RENAR.</p>
+
+    <div class="blueprint" style="background:var(--color-surface)">
+      <sc-for list="{{ servicios }}" as="s" hint-placeholder-count="4">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--color-divider)">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="width:9px;height:9px;border-radius:50%;background:{{ s.dot }};display:inline-block"></span>
+            <span style="font-weight:600;font-size:14px">{{ s.nombre }}</span>
+          </div>
+          <span class="tag" style="{{ s.style }}">{{ s.estado }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <div style="font-size:12px;opacity:.55;margin-top:14px">Última actualización: 23/09/2026 — 09:15</div>
+  </section>
+  <div style="flex:1"></div>
+  <dc-import name="Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+function style(estado) { return estado === 'Operativo' ? 'background:oklch(94% 0.05 155);color:oklch(35% 0.09 155)' : 'background:oklch(94% 0.06 80);color:oklch(42% 0.12 80)'; }
+function dot(estado) { return estado === 'Operativo' ? 'oklch(55% 0.1 155)' : 'oklch(60% 0.12 80)'; }
+class Component extends DCLogic {
+  renderVals() {
+    const servicios = [
+      { nombre: 'Portal RENAR', estado: 'Operativo' },
+      { nombre: 'miRenar', estado: 'Operativo' },
+      { nombre: 'Pagos', estado: 'Operativo' },
+      { nombre: 'Trámites', estado: 'Operativo' },
+    ].map(s => ({ ...s, style: style(s.estado), dot: dot(s.estado) }));
+    return { servicios };
+  }
+}
+</script>
+</body>
+</html>

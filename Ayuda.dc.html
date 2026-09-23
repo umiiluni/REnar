@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/styles.css">
+  <script src="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/_ds_bundle.js"></script>
+  <title>miRenar — Ayuda</title>
+</helmet>
+<div style="background:var(--color-bg);min-height:100vh;display:flex;flex-direction:column">
+  <dc-import name="Header" active="ayuda" hint-size="100%,116px"></dc-import>
+  <div style="max-width:1280px;margin:0 auto;padding:16px 24px 0;font-size:13px;opacity:.6">
+    <a href="Home.dc.html" style="color:var(--color-text);text-decoration:none" style-hover="text-decoration:underline">Inicio</a> / Ayuda
+  </div>
+  <section style="max-width:900px;margin:0 auto;padding:16px 24px 20px;width:100%">
+    <h1 style="font-family:var(--font-heading);font-size:32px;font-weight:700;margin:0 0 4px">Ayuda</h1>
+    <p style="font-size:14px;opacity:.65;margin:0 0 28px">Preguntas frecuentes y formas de contacto.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px">
+      <a href="EstadoSistema.dc.html" class="btn btn-secondary" style="justify-content:center;padding:14px">Estado del sistema</a>
+      <a href="Encuesta.dc.html" class="btn btn-secondary" style="justify-content:center;padding:14px">Encuesta de atención</a>
+      <a href="mailto:consultas@anmac.gob.ar" class="btn btn-primary" style="justify-content:center;padding:14px">Escribinos</a>
+    </div>
+
+    <h2 style="font-family:var(--font-heading);font-size:20px;font-weight:700;margin:0 0 14px">Preguntas frecuentes</h2>
+    <div style="display:flex;flex-direction:column;gap:0;margin-bottom:32px">
+      <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="4">
+        <div style="border-bottom:1px solid var(--color-divider)">
+          <button onClick="{{ f.toggle }}" style="display:flex;width:100%;justify-content:space-between;align-items:center;padding:16px 4px;background:none;border:none;cursor:pointer;text-align:left;font-family:var(--font-heading);font-weight:600;font-size:15px;color:var(--color-text)">
+            {{ f.q }}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="{{ f.iconStyle }}"><path d="M6 9l6 6 6-6"></path></svg>
+          </button>
+          <sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}">
+            <p style="font-size:14px;opacity:.75;line-height:1.6;padding:0 4px 16px;margin:0">{{ f.a }}</p>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+
+    <div class="blueprint" style="padding:24px;background:var(--color-surface)">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div style="font-family:var(--font-heading);font-weight:700;font-size:17px;margin-bottom:14px">Contacto</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+        <div class="field"><label>Nombre</label><input class="input" type="text" placeholder="Tu nombre" /></div>
+        <div class="field"><label>Correo electrónico</label><input class="input" type="email" placeholder="tu@correo.com" /></div>
+      </div>
+      <div class="field" style="margin-bottom:16px"><label>Mensaje</label><textarea class="input" placeholder="Contanos tu consulta"></textarea></div>
+      <button class="btn btn-primary" onClick="{{ onSend }}">Enviar consulta</button>
+      <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:12px;font-size:13px;color:oklch(35% 0.09 155)">Tu consulta fue enviada. Te responderemos a la brevedad.</div>
+      </sc-if>
+      <div class="hr"></div>
+      <div style="font-size:13px;opacity:.75">consultas@anmac.gob.ar · B. Mitre 1465 — CABA</div>
+    </div>
+  </section>
+  <div style="flex:1"></div>
+  <dc-import name="Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const FAQS = [
+  { q: '¿Cómo solicito una credencial?', a: 'Ingresá a la sección Credenciales y seleccioná "Solicitar credencial". Vas a necesitar tu DNI y comprobante de domicilio.' },
+  { q: '¿Cuánto tarda la renovación?', a: 'La renovación de credencial demora aproximadamente 5 días hábiles desde que se presenta la documentación completa.' },
+  { q: '¿Dónde consulto el estado de mi trámite?', a: 'Podés ver el estado de todos tus trámites en la sección Trámites, pestaña "Estado de trámites".' },
+  { q: '¿Qué es el domicilio electrónico?', a: 'Es el medio por el cual RENAR te notifica novedades sobre tus trámites. Podés constituirlo desde tu perfil.' },
+];
+class Component extends DCLogic {
+  state = { openIdx: 0, sent: false };
+  renderVals() {
+    return {
+      faqs: FAQS.map((f, i) => ({ ...f, open: this.state.openIdx === i,
+        iconStyle: this.state.openIdx === i ? 'transform:rotate(180deg)' : '',
+        toggle: () => this.setState(s => ({ openIdx: s.openIdx === i ? null : i })) })),
+      sent: this.state.sent,
+      onSend: () => this.setState({ sent: true }),
+    };
+  }
+}
+</script>
+</body>
+</html>

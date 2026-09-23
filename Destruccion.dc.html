@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/styles.css">
+  <script src="_ds/industry-548c896e-2718-4f2d-9b7c-e2e4cfa6b691/_ds_bundle.js"></script>
+  <title>miRenar — Empresas de destrucción</title>
+</helmet>
+<div style="background:var(--color-bg);min-height:100vh;display:flex;flex-direction:column">
+  <dc-import name="Header" active="destruccion" hint-size="100%,116px"></dc-import>
+  <div style="max-width:1280px;margin:0 auto;padding:16px 24px 0;font-size:13px;opacity:.6">
+    <a href="Home.dc.html" style="color:var(--color-text);text-decoration:none" style-hover="text-decoration:underline">Inicio</a> / Recursos / Empresas de destrucción
+  </div>
+  <section style="max-width:1280px;margin:0 auto;padding:16px 24px 20px;width:100%">
+    <h1 style="font-family:var(--font-heading);font-size:32px;font-weight:700;margin:0 0 4px">Empresas de destrucción de materiales</h1>
+    <p style="font-size:14px;opacity:.65;margin:0 0 8px">Empresas habilitadas para la destrucción de Materiales de Uso Específico (MUE).</p>
+    <p style="font-size:12px;opacity:.5;margin:0 0 24px">MUE — Materiales de Uso Específico.</p>
+
+    <div style="overflow-x:auto;margin-bottom:28px">
+      <table class="table" style="width:100%;min-width:520px">
+        <thead><tr><th>Empresa</th><th>Ubicación</th><th>Habilitación</th><th>Estado</th></tr></thead>
+        <tbody>
+          <sc-for list="{{ empresas }}" as="e" hint-placeholder-count="3">
+            <tr>
+              <td>{{ e.nombre }}</td>
+              <td>{{ e.ubicacion }}</td>
+              <td>{{ e.habilitacion }}</td>
+              <td><span class="tag tag-accent">{{ e.estado }}</span></td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="blueprint" style="padding:20px;background:var(--color-surface)">
+      <div style="font-family:var(--font-heading);font-weight:700;font-size:15px;margin-bottom:6px">Requisitos para habilitarse</div>
+      <p style="font-size:13px;opacity:.75;line-height:1.6;margin:0">Las empresas interesadas en prestar el servicio de destrucción de MUE deben presentar habilitación municipal, protocolo de seguridad y auditoría de RENAR.</p>
+    </div>
+  </section>
+  <div style="flex:1"></div>
+  <dc-import name="Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      empresas: [
+        { nombre: 'Destructora Ejemplo S.A.', ubicacion: 'Buenos Aires', habilitacion: 'MUE-2024-001', estado: 'Habilitada' },
+        { nombre: 'Segura MUE S.R.L.', ubicacion: 'Córdoba', habilitacion: 'MUE-2023-014', estado: 'Habilitada' },
+        { nombre: 'Recicla Metal S.A.', ubicacion: 'Santa Fe', habilitacion: 'MUE-2022-077', estado: 'Habilitada' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>
