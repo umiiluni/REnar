@@ -34,6 +34,38 @@
       </div>
     </div>
 
+    <h2 id="tccm" style="font-family:var(--font-heading);font-size:20px;font-weight:700;margin:0 0 14px">Tarjeta de Consumo de Municiones (TCCM)</h2>
+    <p style="font-size:13px;opacity:.7;margin:0 0 16px">Tarjeta digital que registra tus compras de municiones en armerías habilitadas. RENAR no vende armas ni municiones: la compra se realiza en la armería, que descuenta el consumo de tu tarjeta.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:32px">
+      <div class="blueprint" style="padding:0;background:var(--color-surface);overflow:hidden">
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:14px;padding:14px 16px 0">Mis Tarjetas</div>
+        <div style="overflow-x:auto;padding:14px 16px 16px">
+          <table class="table" style="width:100%">
+            <thead><tr><th>#</th><th>Usos</th><th>Tarjeta</th></tr></thead>
+            <tbody>
+              <sc-for list="{{ tarjetas }}" as="c" hint-placeholder-count="1">
+                <tr><td>{{ c.numero }}</td><td>{{ c.usos }}</td><td>{{ c.tarjeta }}</td></tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="blueprint" style="padding:0;background:var(--color-surface);overflow:hidden">
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:14px;padding:14px 16px 0">Mis Compras</div>
+        <div style="overflow-x:auto;padding:14px 16px 16px">
+          <table class="table" style="width:100%">
+            <thead><tr><th>Fecha</th><th>Armería</th><th>Cant</th><th>Tarjeta</th></tr></thead>
+            <tbody>
+              <sc-for list="{{ compras }}" as="c" hint-placeholder-count="3">
+                <tr><td>{{ c.fecha }}</td><td>{{ c.armeria }}</td><td>{{ c.cantidad }}</td><td>{{ c.tarjeta }}</td></tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
     <h2 style="font-family:var(--font-heading);font-size:20px;font-weight:700;margin:0 0 14px">Cupos y requisitos por calibre</h2>
     <div style="overflow-x:auto">
       <table class="table" style="width:100%;min-width:520px">
@@ -64,6 +96,14 @@
 class Component extends DCLogic {
   renderVals() {
     return {
+      tarjetas: [
+        { numero: 1, usos: 2, tarjeta: 'TCCM-000482913' },
+      ],
+      compras: [
+        { fecha: '12/08/2026', armeria: 'Armería San Martín', cantidad: 50, tarjeta: 'TCCM-000482913' },
+        { fecha: '03/06/2026', armeria: 'Armería del Sur', cantidad: 100, tarjeta: 'TCCM-000482913' },
+        { fecha: '20/03/2026', armeria: 'Armería San Martín', cantidad: 50, tarjeta: 'TCCM-000482913' },
+      ],
       items: [
         { calibre: '9mm', cupo: '200 unidades', requisito: 'Credencial de Legítimo Usuario', estado: 'Habilitado' },
         { calibre: '.38', cupo: '150 unidades', requisito: 'Credencial de Legítimo Usuario', estado: 'Habilitado' },

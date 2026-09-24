@@ -13,6 +13,7 @@ Abrí `index.html` en el navegador (redirige a `pages/Home.dc.html`), o abrí di
   - `Header.dc.html`, `Footer.dc.html` — navegación y pie de página compartidos, importados por todas las páginas.
   - `Home.dc.html` — inicio: hero, acceso miArgentina, accesos rápidos.
   - `Tramites.dc.html`, `Credenciales.dc.html`, `Municiones.dc.html`, `Personas.dc.html`, `Armas.dc.html`, `Comercios.dc.html`, `Profesionales.dc.html` — secciones principales de gestión.
+  - `GuiaCLU.dc.html` — guía paso a paso para tramitar la CLU 100% online sin gestores, con enlace al registro de profesionales de evaluación psicofísica (médicos y psicólogos) e instructores de tiro en `Profesionales.dc.html`.
   - `Nomenclador.dc.html`, `Aranceles.dc.html`, `Vuce.dc.html`, `Destruccion.dc.html`, `PuntosFronterizos.dc.html` — recursos y consultas.
   - `Pagos.dc.html`, `EstadoSistema.dc.html`, `DomicilioElectronico.dc.html`, `Taller.dc.html` — cuenta y servicios.
   - `Ayuda.dc.html`, `Encuesta.dc.html`, `Perfil.dc.html` — soporte y cuenta de usuario.

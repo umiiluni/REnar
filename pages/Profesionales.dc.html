@@ -21,6 +21,14 @@
     <h1 style="font-family:var(--font-heading);font-size:32px;font-weight:700;margin:0 0 4px">Profesionales e instructores</h1>
     <p style="font-size:14px;opacity:.65;margin:0 0 24px">Registro profesional y estado de matrícula.</p>
 
+    <div class="blueprint" style="padding:18px 20px;background:var(--color-accent-100);margin-bottom:24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
+      <div>
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:15px;margin-bottom:4px">¿Vas a tramitar tu CLU?</div>
+        <div style="font-size:13px;opacity:.75;line-height:1.5">Necesitás una evaluación psicofísica (médico y psicólogo) y la evaluación de un instructor de tiro matriculado. Acá abajo podés buscarlos.</div>
+      </div>
+      <a href="GuiaCLU.dc.html" class="btn btn-primary" style="flex:none;padding:10px 18px;font-size:14px">Ver guía paso a paso →</a>
+    </div>
+
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px">
       <a href="#tabla-matriculas" class="btn btn-secondary" style="justify-content:center;padding:14px">Consultar registro</a>
       <a href="#tabla-matriculas" class="btn btn-secondary" style="justify-content:center;padding:14px">Ver estado</a>
@@ -28,14 +36,23 @@
       <a href="Tramites.dc.html" class="btn btn-primary" style="justify-content:center;padding:14px">Iniciar trámite</a>
     </div>
 
-    <div id="tabla-matriculas" style="overflow-x:auto">
-      <table class="table" style="width:100%;min-width:560px">
-        <thead><tr><th>Matrícula</th><th>Categoría</th><th>Estado</th><th>Vencimiento</th></tr></thead>
+    <div id="tabla-matriculas" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px">
+      <select class="input" style="width:auto;min-width:260px" value="{{ fCategoria }}" onChange="{{ onCategoria }}" aria-label="Filtrar por categoría">
+        <sc-for list="{{ categorias }}" as="c" hint-placeholder-count="5"><option value="{{ c }}">{{ c }}</option></sc-for>
+      </select>
+      <div style="font-size:13px;opacity:.6;align-self:center">{{ resultCount }} profesionales encontrados</div>
+    </div>
+
+    <div style="overflow-x:auto">
+      <table class="table" style="width:100%;min-width:680px">
+        <thead><tr><th>Matrícula</th><th>Profesional</th><th>Categoría</th><th>Localidad</th><th>Estado</th><th>Vencimiento</th></tr></thead>
         <tbody>
-          <sc-for list="{{ profesionales }}" as="p" hint-placeholder-count="2">
+          <sc-for list="{{ filtered }}" as="p" hint-placeholder-count="4">
             <tr>
               <td>{{ p.matricula }}</td>
-              <td>{{ p.nombre }}</td>
+              <td>{{ p.profesional }}</td>
+              <td>{{ p.categoria }}</td>
+              <td>{{ p.localidad }}</td>
               <td><span class="tag" style="{{ p.style }}">{{ p.estado }}</span></td>
               <td>{{ p.vencimiento }}</td>
             </tr>
@@ -44,9 +61,20 @@
       </table>
     </div>
 
-    <div class="blueprint" style="padding:20px;background:var(--color-surface);margin-top:24px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px">
+      <div class="blueprint" style="padding:20px;background:var(--color-surface)">
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:15px;margin-bottom:6px">Evaluación psicofísica</div>
+        <p style="font-size:13px;opacity:.75;line-height:1.6;margin:0">Médicos y psicólogos matriculados que pueden realizar la evaluación psicofísica exigida para la CLU. El resultado lo cargan ellos directamente en MiRENAR.</p>
+      </div>
+      <div class="blueprint" style="padding:20px;background:var(--color-surface)">
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:15px;margin-bottom:6px">Instructores de tiro</div>
+        <p style="font-size:13px;opacity:.75;line-height:1.6;margin:0">Instructores habilitados para tomar la evaluación de manejo y seguridad de armas, también cargada directamente en MiRENAR.</p>
+      </div>
+    </div>
+
+    <div class="blueprint" style="padding:20px;background:var(--color-surface);margin-top:16px">
       <div style="font-family:var(--font-heading);font-weight:700;font-size:15px;margin-bottom:6px">Requisitos</div>
-      <p style="font-size:13px;opacity:.75;line-height:1.6;margin:0">Para inscribirte como instructor o armero matriculado necesitás título habilitante, certificado de antecedentes y aprobar la capacitación de RENAR.</p>
+      <p style="font-size:13px;opacity:.75;line-height:1.6;margin:0">Para inscribirte como instructor, médico, psicólogo o armero matriculado necesitás título habilitante, certificado de antecedentes y aprobar la capacitación de RENAR.</p>
     </div>
   </section>
   <div style="flex:1"></div>
@@ -58,13 +86,30 @@ function style(estado) {
   if (estado === 'Vigente') return 'background:oklch(94% 0.05 155);color:oklch(35% 0.09 155)';
   return 'background:oklch(94% 0.06 80);color:oklch(42% 0.12 80)';
 }
+const PROFESIONALES = [
+  { matricula: 'INS-00021', profesional: 'Torres, Gabriel', categoria: 'Instructor de tiro', localidad: 'Rosario, Santa Fe', estado: 'Vigente', vencimiento: '10/05/2027' },
+  { matricula: 'INS-00045', profesional: 'Fernández, Lucía', categoria: 'Instructor de tiro', localidad: 'CABA', estado: 'Vigente', vencimiento: '22/01/2028' },
+  { matricula: 'PSI-00110', profesional: 'Romero, Valeria (Lic. en Psicología)', categoria: 'Psicólogo (evaluación psicofísica)', localidad: 'Córdoba', estado: 'Vigente', vencimiento: '15/09/2027' },
+  { matricula: 'PSI-00134', profesional: 'Ibarra, Martín (Lic. en Psicología)', categoria: 'Psicólogo (evaluación psicofísica)', localidad: 'Mendoza', estado: 'En trámite', vencimiento: '—' },
+  { matricula: 'MED-00087', profesional: 'Suárez, Diego (Médico)', categoria: 'Médico (evaluación psicofísica)', localidad: 'La Plata, Buenos Aires', estado: 'Vigente', vencimiento: '03/12/2026' },
+  { matricula: 'MED-00099', profesional: 'Paz, Camila (Médica)', categoria: 'Médico (evaluación psicofísica)', localidad: 'Rosario, Santa Fe', estado: 'Vigente', vencimiento: '19/07/2027' },
+  { matricula: 'ARM-00087', profesional: 'Gómez, Raúl', categoria: 'Armero matriculado', localidad: 'Neuquén', estado: 'En trámite', vencimiento: '—' },
+  { matricula: 'ARM-00102', profesional: 'Díaz, Sofía', categoria: 'Armero matriculado', localidad: 'Mar del Plata, Buenos Aires', estado: 'Vigente', vencimiento: '28/02/2028' },
+];
+const CATEGORIAS = ['Todas', 'Instructor de tiro', 'Médico (evaluación psicofísica)', 'Psicólogo (evaluación psicofísica)', 'Armero matriculado'];
+
 class Component extends DCLogic {
+  state = { fCategoria: 'Todas' };
   renderVals() {
+    const filtered = PROFESIONALES
+      .filter(p => this.state.fCategoria === 'Todas' || p.categoria === this.state.fCategoria)
+      .map(p => ({ ...p, style: style(p.estado) }));
     return {
-      profesionales: [
-        { matricula: 'INS-00021', nombre: 'Instructor de tiro nivel I', estado: 'Vigente', vencimiento: '10/05/2027', style: style('Vigente') },
-        { matricula: 'ARM-00087', nombre: 'Armero matriculado', estado: 'En trámite', vencimiento: '—', style: style('En trámite') },
-      ],
+      categorias: CATEGORIAS,
+      fCategoria: this.state.fCategoria,
+      onCategoria: e => this.setState({ fCategoria: e.target.value }),
+      resultCount: filtered.length,
+      filtered,
     };
   }
 }

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../assets/js/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="../assets/design-system/industry/styles.css">
+  <script src="../assets/design-system/industry/_ds_bundle.js"></script>
+  <title>miRenar — Guía CLU 100% online</title>
+</helmet>
+<div style="background:var(--color-bg);min-height:100vh;display:flex;flex-direction:column">
+  <dc-import name="Header" active="tramites" hint-size="100%,116px"></dc-import>
+  <div style="max-width:1280px;margin:0 auto;padding:16px 24px 0;font-size:13px;opacity:.6">
+    <a href="Home.dc.html" style="color:var(--color-text);text-decoration:none" style-hover="text-decoration:underline">Inicio</a> / <a href="Tramites.dc.html" style="color:var(--color-text);text-decoration:none" style-hover="text-decoration:underline">Trámites</a> / Guía CLU
+  </div>
+
+  <section style="max-width:900px;margin:0 auto;padding:16px 24px 8px;width:100%">
+    <div class="tag tag-accent" style="margin-bottom:14px">Guía paso a paso</div>
+    <h1 style="font-family:var(--font-heading);font-size:32px;font-weight:700;margin:0 0 8px">Cómo tramitar tu CLU 100% online, sin gestores</h1>
+    <p style="font-size:15px;opacity:.75;line-height:1.6;margin:0 0 24px">La Credencial de Legítimo Usuario (CLU) se puede pedir vos mismo, de punta a punta, desde MiRENAR y Mi Argentina. No hace falta pagarle a un gestor: acá te mostramos el circuito completo.</p>
+  </section>
+
+  <section style="max-width:900px;margin:0 auto;padding:0 24px 20px;width:100%">
+    <div class="blueprint" style="padding:20px;background:var(--color-surface);margin-bottom:28px">
+      <div style="font-family:var(--font-heading);font-weight:700;font-size:15px;margin-bottom:6px">Antes de empezar</div>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.7;opacity:.8">
+        <li>Tenés que ser argentino/a (nativo o naturalizado) o extranjero/a con residencia permanente, y ser mayor de 18 años.</li>
+        <li>No tener antecedentes penales que te inhabiliten como legítimo usuario.</li>
+        <li>Contar con un domicilio declarado donde vas a guardar el arma.</li>
+      </ul>
+    </div>
+
+    <h2 style="font-family:var(--font-heading);font-size:22px;font-weight:700;margin:0 0 16px">Los 10 pasos</h2>
+    <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:32px">
+      <sc-for list="{{ pasos }}" as="p" hint-placeholder-count="10">
+        <div style="display:flex;gap:16px;align-items:flex-start">
+          <div style="flex:none;width:32px;height:32px;border-radius:50%;background:var(--color-accent);color:var(--color-bg);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-weight:700;font-size:14px">{{ p.n }}</div>
+          <div style="padding-top:4px">
+            <div style="font-family:var(--font-heading);font-weight:700;font-size:15px;margin-bottom:2px">{{ p.title }}</div>
+            <div style="font-size:13px;opacity:.75;line-height:1.6">{{ p.desc }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div class="blueprint" style="padding:20px;background:var(--color-accent-100);margin-bottom:28px">
+      <div style="font-family:var(--font-heading);font-weight:700;font-size:15px;margin-bottom:6px">Los dos pasos que no dependen solo de vos</div>
+      <p style="font-size:13px;opacity:.8;line-height:1.7;margin:0 0 12px">La evaluación psicofísica (médico y psicólogo) y la evaluación del instructor de tiro las hace un profesional matriculado, que después carga el resultado directamente en tu trámite de MiRENAR. Buscá profesionales habilitados cerca tuyo en el registro:</p>
+      <a href="Profesionales.dc.html" class="btn btn-primary" style="padding:10px 18px;font-size:14px">Ver profesionales e instructores →</a>
+    </div>
+
+    <h2 style="font-family:var(--font-heading);font-size:22px;font-weight:700;margin:0 0 12px">Datos útiles</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px">
+      <div class="blueprint" style="padding:16px;background:var(--color-surface)">
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:13px;opacity:.6;margin-bottom:4px">Vigencia</div>
+        <div style="font-size:14px">5 años desde la emisión</div>
+      </div>
+      <div class="blueprint" style="padding:16px;background:var(--color-surface)">
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:13px;opacity:.6;margin-bottom:4px">Renovación</div>
+        <div style="font-size:14px">Se habilita 90 días antes del vencimiento</div>
+      </div>
+      <div class="blueprint" style="padding:16px;background:var(--color-surface)">
+        <div style="font-family:var(--font-heading);font-weight:700;font-size:13px;opacity:.6;margin-bottom:4px">Costo</div>
+        <div style="font-size:14px">Consultá el arancel vigente</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px">
+      <a href="Credenciales.dc.html" class="btn btn-primary" style="padding:12px 20px;font-size:14px">Iniciar mi CLU en Credenciales →</a>
+      <a href="Aranceles.dc.html" class="btn btn-secondary" style="padding:12px 20px;font-size:14px">Ver aranceles</a>
+      <a href="https://www.argentina.gob.ar/servicio/solicitar-la-credencial-digital-de-legitimo-usuario-clu" target="_blank" rel="noopener" class="btn btn-ghost" style="padding:12px 20px;font-size:14px">Fuente: argentina.gob.ar ↗</a>
+    </div>
+  </section>
+
+  <div style="flex:1"></div>
+  <dc-import name="Footer" hint-size="100%,220px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const PASOS = [
+  { n: 1, title: 'Entrá a MiRENAR con tu cuenta de Mi Argentina', desc: 'Iniciá sesión en la plataforma con tu usuario de Mi Argentina, sin necesidad de intermediarios.' },
+  { n: 2, title: 'Declará si pertenecés a una fuerza de seguridad', desc: 'El sistema te pregunta tu situación respecto a fuerzas de seguridad, si corresponde.' },
+  { n: 3, title: 'Sumá tu certificado de antecedentes penales', desc: 'Tiene que estar emitido dentro de los 60 días previos a la presentación.' },
+  { n: 4, title: 'Dejá que el sistema verifique tus medios de vida', desc: 'MiRENAR cruza automáticamente que tengas medios de vida lícitos declarados.' },
+  { n: 5, title: 'Hacé tu evaluación psicofísica', desc: 'La toma un médico o psicólogo matriculado, que carga el resultado directo en tu trámite.' },
+  { n: 6, title: 'Hacé tu evaluación de manejo de armas', desc: 'La toma un instructor de tiro matriculado, que también carga el resultado en el sistema.' },
+  { n: 7, title: 'Declará el domicilio donde vas a guardar el arma', desc: 'Es el domicilio que RENAR registra como lugar de guarda.' },
+  { n: 8, title: 'Pagá el arancel con el QR', desc: 'El pago se hace en línea, desde la propia plataforma.' },
+  { n: 9, title: 'Recibí la aprobación de tu credencial', desc: 'Una vez validado todo lo anterior, la aprobación es inmediata.' },
+  { n: 10, title: 'Verificá tu credencial en Mi Argentina', desc: 'Tu CLU digital queda disponible para mostrar desde la app de Mi Argentina.' },
+];
+class Component extends DCLogic {
+  renderVals() {
+    return { pasos: PASOS };
+  }
+}
+</script>
+</body>
+</html>

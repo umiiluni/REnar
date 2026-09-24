@@ -21,6 +21,25 @@
     <h1 style="font-family:var(--font-heading);font-size:32px;font-weight:700;margin:0 0 4px">Trámites</h1>
     <p style="font-size:14px;opacity:.65;margin:0 0 24px">Encontrá y gestioná el trámite que necesitás.</p>
 
+    <div style="margin-bottom:32px">
+      <div style="font-family:var(--font-heading);font-weight:700;font-size:16px;margin-bottom:2px">¿No sabés por dónde empezar?</div>
+      <p style="font-size:13px;opacity:.65;margin:0 0 14px">Estas guías te muestran qué trámites podés hacer, qué documentación necesitás y los pasos a seguir.</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+        <sc-for list="{{ guias }}" as="g" hint-placeholder-count="3">
+          <div class="blueprint" style="padding:16px;background:var(--color-surface);display:flex;flex-direction:column;gap:8px">
+            <div style="font-family:var(--font-heading);font-weight:700;font-size:14px">{{ g.title }}</div>
+            <div style="font-size:12px;opacity:.7;line-height:1.5;flex:1">{{ g.desc }}</div>
+            <sc-if value="{{ g.esLink }}" hint-placeholder-val="{{ true }}">
+              <a href="{{ g.href }}" class="btn btn-secondary" style="padding:8px 14px;font-size:13px;justify-content:center">Ver guía →</a>
+            </sc-if>
+            <sc-if value="{{ g.esModal }}" hint-placeholder-val="{{ false }}">
+              <button class="btn btn-secondary" style="padding:8px 14px;font-size:13px" onClick="{{ g.onOpen }}">Ver pasos →</button>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
     <div style="position:relative;max-width:440px;margin-bottom:16px">
       <input class="input" type="text" placeholder="Buscar trámite..." value="{{ query }}" onChange="{{ onQuery }}" style="padding-left:34px" aria-label="Buscar trámite" />
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);opacity:.5"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>
@@ -57,7 +76,12 @@
           <div style="font-size:12px;opacity:.65"><strong style="opacity:.8">Documentación:</strong> {{ t.doc }}</div>
           <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
             <span class="tag" style="{{ t.estadoStyle }}">{{ t.estado }}</span>
-            <button class="btn btn-primary" style="padding:8px 14px;font-size:13px" onClick="{{ t.onStart }}">Iniciar trámite</button>
+            <sc-if value="{{ t.esConsulta }}" hint-placeholder-val="{{ false }}">
+              <a href="{{ t.href }}" class="btn btn-primary" style="padding:8px 14px;font-size:13px">Consultar tarjeta</a>
+            </sc-if>
+            <sc-if value="{{ t.esTramite }}" hint-placeholder-val="{{ true }}">
+              <button class="btn btn-primary" style="padding:8px 14px;font-size:13px" onClick="{{ t.onStart }}">Iniciar trámite</button>
+            </sc-if>
           </div>
         </div>
       </sc-for>
@@ -74,7 +98,17 @@
     <div style="position:fixed;inset:0;background:color-mix(in srgb, var(--color-neutral-900) 55%, transparent);z-index:300;display:flex;align-items:center;justify-content:center" onClick="{{ closeModal }}">
       <div class="dialog" style="max-width:420px" onClick="{{ stop }}">
         <div class="dialog-title">{{ modalTitle }}</div>
-        <div class="dialog-body">{{ modalBody }}</div>
+        <div class="dialog-body">
+          <div>{{ modalBody }}</div>
+          <sc-if value="{{ hasSteps }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:12px;font-weight:600;opacity:.7;margin-top:14px;margin-bottom:6px">Cómo seguir:</div>
+            <ol style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px">
+              <sc-for list="{{ modalSteps }}" as="s" hint-placeholder-count="4">
+                <li style="font-size:13px;line-height:1.4">{{ s }}</li>
+              </sc-for>
+            </ol>
+          </sc-if>
+        </div>
         <div class="dialog-actions"><button class="btn btn-primary" onClick="{{ closeModal }}">Cerrar</button></div>
       </div>
     </div>
@@ -86,14 +120,32 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 const TRAMITES = [
-  { id: 1, nombre: 'Solicitud de credencial de tenencia', categoria: 'Credenciales', usuario: 'Persona física', estado: 'Disponible', modalidad: 'En línea', tiempo: '10 días hábiles', doc: 'DNI, certificado de domicilio' },
-  { id: 2, nombre: 'Renovación de credencial', categoria: 'Credenciales', usuario: 'Persona física', estado: 'Disponible', modalidad: 'En línea', tiempo: '5 días hábiles', doc: 'DNI, credencial anterior' },
-  { id: 3, nombre: 'Registro de arma de fuego', categoria: 'Armas', usuario: 'Persona física', estado: 'Disponible', modalidad: 'Presencial', tiempo: '15 días hábiles', doc: 'Factura de compra, credencial vigente' },
+  { id: 1, nombre: 'Solicitud de credencial de tenencia', categoria: 'Credenciales', usuario: 'Persona física', estado: 'Disponible', modalidad: 'En línea', tiempo: '10 días hábiles', doc: 'DNI, certificado de domicilio', pasos: [
+    'Contá con tu CLU vigente antes de iniciar este trámite.',
+    'Completá el formulario en línea con los datos del arma que vas a registrar a tu nombre.',
+    'Subí la factura de compra o la documentación que acredite la tenencia.',
+    'Aboná el arancel correspondiente.',
+    'Esperá la validación de RENAR y retirá tu credencial de tenencia.',
+  ] },
+  { id: 2, nombre: 'Obtener/Renovar CLU', categoria: 'Credenciales', usuario: 'Persona física', estado: 'Disponible', modalidad: 'En línea', tiempo: '5 días hábiles', doc: 'DNI, CLU anterior (si renovás)', pasos: [
+    'Verificá que tengas a mano tu DNI y, si estás renovando, tu CLU anterior.',
+    'Completá el formulario en línea con tus datos y los del arma (si corresponde).',
+    'Subí la documentación requerida en formato digital.',
+    'Aboná el arancel correspondiente para iniciar el trámite.',
+    'Seguí el estado de tu trámite desde "Mis trámites" hasta recibir la confirmación.',
+  ] },
+  { id: 3, nombre: 'Registro de arma de fuego', categoria: 'Armas', usuario: 'Persona física', estado: 'Disponible', modalidad: 'Presencial', tiempo: '15 días hábiles', doc: 'Factura de compra, credencial de legítimo usuario vigente', pasos: [
+    'Verificá que tu credencial de legítimo usuario (CLU) esté vigente.',
+    'Reuní la factura de compra o el documento que acredite el origen del arma.',
+    'Pedí turno en una delegación de RENAR para la verificación presencial.',
+    'Presentá la documentación y el arma para su inscripción.',
+    'Recibí el comprobante de registro y la actualización en tu credencial.',
+  ] },
   { id: 4, nombre: 'Habilitación de comercio de armas', categoria: 'Comercios', usuario: 'Persona jurídica', estado: 'Disponible', modalidad: 'Mixta', tiempo: '30 días hábiles', doc: 'Estatuto, habilitación municipal' },
   { id: 5, nombre: 'Inscripción de profesional instructor', categoria: 'Profesionales', usuario: 'Persona física', estado: 'Disponible', modalidad: 'En línea', tiempo: '20 días hábiles', doc: 'Título habilitante, CV' },
   { id: 6, nombre: 'Constitución de domicilio electrónico', categoria: 'Domicilio', usuario: 'Persona física', estado: 'Disponible', modalidad: 'En línea', tiempo: 'Inmediato', doc: 'DNI' },
-  { id: 7, nombre: 'Compra de municiones', categoria: 'Municiones', usuario: 'Persona física', estado: 'Disponible', modalidad: 'Presencial', tiempo: '3 días hábiles', doc: 'Credencial vigente' },
-  { id: 8, nombre: 'Baja de arma de fuego', categoria: 'Armas', usuario: 'Persona física', estado: 'Suspendido temporalmente', modalidad: 'Presencial', tiempo: '10 días hábiles', doc: 'Credencial, DNI' },
+  { id: 7, nombre: 'Tarjeta de Consumo de Municiones (TCCM)', categoria: 'Municiones', usuario: 'Persona física', estado: 'Disponible', modalidad: 'En línea', tiempo: 'Inmediato', doc: 'Credencial de legítimo usuario vigente', esConsulta: true, href: 'Municiones.dc.html#tccm' },
+  { id: 8, nombre: 'Baja de arma de fuego', categoria: 'Armas', usuario: 'Persona física', estado: 'Suspendido temporalmente', modalidad: 'Presencial', tiempo: '10 días hábiles', doc: 'Credencial de legítimo usuario, DNI' },
 ];
 function estadoStyle(estado) {
   if (estado === 'Disponible') return 'background:oklch(94% 0.05 155);color:oklch(35% 0.09 155)';
@@ -101,8 +153,8 @@ function estadoStyle(estado) {
 }
 
 class Component extends DCLogic {
-  state = { query: '', fCategoria: 'Todas', fUsuario: 'Todos', fModalidad: 'Todas', modalOpen: false, modalTitle: '', modalBody: '' };
-  open(title, body) { this.setState({ modalOpen: true, modalTitle: title, modalBody: body }); }
+  state = { query: '', fCategoria: 'Todas', fUsuario: 'Todos', fModalidad: 'Todas', modalOpen: false, modalTitle: '', modalBody: '', modalSteps: [] };
+  open(title, body, steps = []) { this.setState({ modalOpen: true, modalTitle: title, modalBody: body, modalSteps: steps }); }
 
   renderVals() {
     const q = this.state.query.trim().toLowerCase();
@@ -112,14 +164,26 @@ class Component extends DCLogic {
       (this.state.fUsuario === 'Todos' || t.usuario === this.state.fUsuario) &&
       (this.state.fModalidad === 'Todas' || t.modalidad === this.state.fModalidad)
     ).map(t => ({ ...t, usuarioLower: t.usuario.toLowerCase(), modalidadLower: t.modalidad.toLowerCase(), estadoStyle: estadoStyle(t.estado),
+      esTramite: !t.esConsulta,
       onStart: () => t.estado === 'Disponible'
-        ? this.open('Trámite iniciado', `Iniciaste "${t.nombre}". Documentación requerida: ${t.doc}. Tiempo estimado: ${t.tiempo}.`)
+        ? this.open('Trámite iniciado', `Iniciaste "${t.nombre}". Documentación requerida: ${t.doc}. Tiempo estimado: ${t.tiempo}.`, t.pasos || [])
         : this.open('Trámite no disponible', `"${t.nombre}" está ${t.estado.toLowerCase()} y no puede iniciarse en este momento.`) }));
+
+    const tenencia = TRAMITES.find(t => t.id === 1);
+    const registro = TRAMITES.find(t => t.id === 3);
 
     return {
       modalOpen: this.state.modalOpen, modalTitle: this.state.modalTitle, modalBody: this.state.modalBody,
+      modalSteps: this.state.modalSteps, hasSteps: this.state.modalSteps.length > 0,
       closeModal: () => this.setState({ modalOpen: false }),
       stop: e => e.stopPropagation(),
+      guias: [
+        { title: 'Guía: CLU 100% online', desc: 'El circuito completo para sacar tu Credencial de Legítimo Usuario, paso a paso.', href: 'GuiaCLU.dc.html', esLink: true, esModal: false },
+        { title: 'Cómo obtener la tenencia', desc: `Qué necesitás y los pasos para registrar un arma a tu nombre. Documentación: ${tenencia.doc}.`, esLink: false, esModal: true,
+          onOpen: () => this.open(tenencia.nombre, `Documentación requerida: ${tenencia.doc}. Tiempo estimado: ${tenencia.tiempo}.`, tenencia.pasos) },
+        { title: 'Cómo registrar un arma', desc: `Qué necesitás y los pasos para inscribir un arma de fuego. Documentación: ${registro.doc}.`, esLink: false, esModal: true,
+          onOpen: () => this.open(registro.nombre, `Documentación requerida: ${registro.doc}. Tiempo estimado: ${registro.tiempo}.`, registro.pasos) },
+      ],
       query: this.state.query,
       onQuery: e => this.setState({ query: e.target.value }),
       categorias: ['Todas', 'Credenciales', 'Armas', 'Comercios', 'Profesionales', 'Domicilio', 'Municiones'],
