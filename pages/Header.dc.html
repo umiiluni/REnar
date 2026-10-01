@@ -89,59 +89,63 @@
         <a href="Perfil.dc.html" class="btn btn-primary" style="flex:none;padding:8px 16px;font-size:14px">Iniciar sesión</a>
       </template>
     </sc-if>
-    <button class="btn btn-icon om-mobile-toggle" aria-label="Abrir menú" onClick="{{ toggleMobile }}" style="display:none">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
-    </button>
+    <sc-if value="{{ loggedIn }}" hint-placeholder-val="{{ true }}">
+      <button class="btn btn-icon om-mobile-toggle" aria-label="Abrir menú" onClick="{{ toggleMobile }}" style="display:none">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+      </button>
+    </sc-if>
   </div>
-  <nav style="border-top:1px solid var(--color-divider);max-width:1280px;margin:0 auto;padding:0 24px;display:flex;gap:4px" class="om-desktop-nav">
-    <a href="Home.dc.html" style="padding:10px 14px;font-family:var(--font-heading);font-size:14px;font-weight:600;text-decoration:none;color:var(--color-text);border-bottom:2px solid transparent" style-hover="border-color:var(--color-accent)">Inicio</a>
-    <sc-for list="{{ groups }}" as="g" hint-placeholder-count="4">
-      <div style="position:relative" onMouseEnter="{{ g.open }}" onMouseLeave="{{ g.close }}">
-        <a href="{{ g.href }}" style="padding:10px 14px;display:flex;align-items:center;gap:5px;font-family:var(--font-heading);font-size:14px;font-weight:600;text-decoration:none;color:var(--color-text);border-bottom:2px solid transparent" style-hover="border-color:var(--color-accent)">
-          {{ g.label }}
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"></path></svg>
-        </a>
-        <sc-if value="{{ g.isOpen }}" hint-placeholder-val="{{ false }}">
-          <div style="position:absolute;top:100%;left:0;background:var(--color-bg);border:1px solid var(--color-divider);box-shadow:var(--shadow-md);min-width:280px;z-index:60;padding:6px">
-            <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="4">
-              <a href="{{ it.href }}" style="display:block;padding:10px 12px;text-decoration:none;color:var(--color-text);border-radius:var(--radius-sm)" style-hover="background:var(--color-accent-100)">
-                <div style="font-size:14px;font-weight:600">{{ it.label }}</div>
-                <div style="font-size:12px;opacity:.6;margin-top:2px">{{ it.desc }}</div>
-              </a>
-            </sc-for>
-          </div>
-        </sc-if>
-      </div>
-    </sc-for>
-    <div style="flex:1"></div>
-  </nav>
-  <sc-if value="{{ mobileOpen }}" hint-placeholder-val="{{ false }}">
-    <div style="position:fixed;inset:0;background:color-mix(in srgb, var(--color-neutral-900) 55%, transparent);z-index:200" onClick="{{ toggleMobile }}">
-      <div style="background:var(--color-bg);width:min(320px,88vw);height:100%;overflow:auto;padding:16px" onClick="{{ stop }}">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-          <div style="font-family:var(--font-heading);font-weight:700;font-size:18px">Menú</div>
-          <button class="btn btn-icon" onClick="{{ toggleMobile }}" aria-label="Cerrar menú">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 6l12 12M18 6L6 18"></path></svg>
-          </button>
+  <sc-if value="{{ loggedIn }}" hint-placeholder-val="{{ true }}">
+    <nav style="border-top:1px solid var(--color-divider);max-width:1280px;margin:0 auto;padding:0 24px;display:flex;gap:4px" class="om-desktop-nav">
+      <a href="Home.dc.html" style="padding:10px 14px;font-family:var(--font-heading);font-size:14px;font-weight:600;text-decoration:none;color:var(--color-text);border-bottom:2px solid transparent" style-hover="border-color:var(--color-accent)">Inicio</a>
+      <sc-for list="{{ groups }}" as="g" hint-placeholder-count="4">
+        <div style="position:relative" onMouseEnter="{{ g.open }}" onMouseLeave="{{ g.close }}">
+          <a href="{{ g.href }}" style="padding:10px 14px;display:flex;align-items:center;gap:5px;font-family:var(--font-heading);font-size:14px;font-weight:600;text-decoration:none;color:var(--color-text);border-bottom:2px solid transparent" style-hover="border-color:var(--color-accent)">
+            {{ g.label }}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"></path></svg>
+          </a>
+          <sc-if value="{{ g.isOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:100%;left:0;background:var(--color-bg);border:1px solid var(--color-divider);box-shadow:var(--shadow-md);min-width:280px;z-index:60;padding:6px">
+              <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="4">
+                <a href="{{ it.href }}" style="display:block;padding:10px 12px;text-decoration:none;color:var(--color-text);border-radius:var(--radius-sm)" style-hover="background:var(--color-accent-100)">
+                  <div style="font-size:14px;font-weight:600">{{ it.label }}</div>
+                  <div style="font-size:12px;opacity:.6;margin-top:2px">{{ it.desc }}</div>
+                </a>
+              </sc-for>
+            </div>
+          </sc-if>
         </div>
-        <a href="Home.dc.html" style="display:block;padding:12px 4px;font-weight:600;text-decoration:none;color:var(--color-text);border-bottom:1px solid var(--color-divider)">Inicio</a>
-        <sc-for list="{{ groups }}" as="g" hint-placeholder-count="4">
-          <div style="border-bottom:1px solid var(--color-divider)">
-            <button onClick="{{ g.toggleMobile }}" style="display:flex;width:100%;justify-content:space-between;align-items:center;padding:12px 4px;background:none;border:none;font-weight:600;font-size:15px;cursor:pointer;color:var(--color-text)">
-              {{ g.label }}
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"></path></svg>
+      </sc-for>
+      <div style="flex:1"></div>
+    </nav>
+    <sc-if value="{{ mobileOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed;inset:0;background:color-mix(in srgb, var(--color-neutral-900) 55%, transparent);z-index:200" onClick="{{ toggleMobile }}">
+        <div style="background:var(--color-bg);width:min(320px,88vw);height:100%;overflow:auto;padding:16px" onClick="{{ stop }}">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <div style="font-family:var(--font-heading);font-weight:700;font-size:18px">Menú</div>
+            <button class="btn btn-icon" onClick="{{ toggleMobile }}" aria-label="Cerrar menú">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 6l12 12M18 6L6 18"></path></svg>
             </button>
-            <sc-if value="{{ g.mobileOpenState }}" hint-placeholder-val="{{ false }}">
-              <div style="padding-bottom:8px">
-                <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="4">
-                  <a href="{{ it.href }}" style="display:block;padding:8px 12px;font-size:14px;text-decoration:none;color:var(--color-text);opacity:.85">{{ it.label }}</a>
-                </sc-for>
-              </div>
-            </sc-if>
           </div>
-        </sc-for>
+          <a href="Home.dc.html" style="display:block;padding:12px 4px;font-weight:600;text-decoration:none;color:var(--color-text);border-bottom:1px solid var(--color-divider)">Inicio</a>
+          <sc-for list="{{ groups }}" as="g" hint-placeholder-count="4">
+            <div style="border-bottom:1px solid var(--color-divider)">
+              <button onClick="{{ g.toggleMobile }}" style="display:flex;width:100%;justify-content:space-between;align-items:center;padding:12px 4px;background:none;border:none;font-weight:600;font-size:15px;cursor:pointer;color:var(--color-text)">
+                {{ g.label }}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"></path></svg>
+              </button>
+              <sc-if value="{{ g.mobileOpenState }}" hint-placeholder-val="{{ false }}">
+                <div style="padding-bottom:8px">
+                  <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="4">
+                    <a href="{{ it.href }}" style="display:block;padding:8px 12px;font-size:14px;text-decoration:none;color:var(--color-text);opacity:.85">{{ it.label }}</a>
+                  </sc-for>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
       </div>
-    </div>
+    </sc-if>
   </sc-if>
 </div>
 </x-dc>
